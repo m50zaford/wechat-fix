@@ -118,19 +118,19 @@ namespace WeChatWASM
 
                 if (returnValue)
                 {
-                    Debug.Log("转换完成并成功上传首包资源");
+                    Debug.Log("변환이 완료되었고 첫 번째 패키지 자원이 성공적으로 업로드되었습니다");
                 }
                 else
                 {
-                    Debug.LogError("首包资源上传失败，请检查网络以及Auto Streaming配置是否正确。");
+                    Debug.LogError("첫 번째 패키지 자원 업로드에 실패했습니다. 네트워크와 Auto Streaming 설정을 확인하십시오.");
                 }
             }
             else
             {
-                Debug.LogError("转换失败");
+                Debug.LogError("변환 실패");
             }
         }
-    
+
     }
 }
 #endif

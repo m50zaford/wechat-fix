@@ -82,7 +82,7 @@ namespace WeChatWASM
 
             GUIStyle linkStyle = GetLinkStyle();
 
-            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "基本信息");
+            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "기본 정보");
             if (foldBaseInfo)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -91,7 +91,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "启动Loading配置");
+            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "시작 로딩 설정");
             if (foldLoadingConfig)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -99,7 +99,7 @@ namespace WeChatWASM
                 GUILayout.BeginHorizontal();
                 string targetBg = "bgImageSrc";
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                tex = (Texture)EditorGUILayout.ObjectField("启动背景图/视频封面", tex, typeof(Texture2D), false);
+                tex = (Texture)EditorGUILayout.ObjectField("시작 배경 이미지/비디오 커버", tex, typeof(Texture2D), false);
                 var currentBgSrc = AssetDatabase.GetAssetPath(tex);
                 if (!string.IsNullOrEmpty(currentBgSrc) && currentBgSrc != this.formInputData[targetBg])
                 {
@@ -113,7 +113,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK功能选项");
+            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK 기능 옵션");
             if (foldSDKOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -121,7 +121,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "调试编译选项");
+            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "디버그 빌드 옵션");
             if (foldDebugOptions)
             {
                 OnSettingDebugOptions(true);
@@ -137,14 +137,14 @@ namespace WeChatWASM
                 this.formInput("dataFileSubPrefix", "Data File Sub Prefix");
 
                 EditorGUI.BeginDisabledGroup(true);
-                this.formCheckbox("autoUploadFirstBundle", "构建后自动上传首包(?)", "仅在开启AutoStreaming生效", true);
+                this.formCheckbox("autoUploadFirstBundle", "빌드 후 자동으로 첫 번째 패키지 업로드(?)", "AutoStreaming이 활성화된 경우에만 적용됩니다", true);
                 EditorGUI.EndDisabledGroup();
 
                 GUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                GUILayout.Label(new GUIContent("清理AS配置(?)", "如需关闭AutoStreaming选用默认发布方案则需要清理AS配置项目。"), GUILayout.Width(140));
+                GUILayout.Label(new GUIContent("AS 구성 정리(?)", "AutoStreaming을 비활성화하고 기본 게시 방안을 사용하려면 AS 구성 항목을 정리해야 합니다."), GUILayout.Width(140));
                 EditorGUI.BeginDisabledGroup(WXConvertCore.IsInstantGameAutoStreaming());
-                if(GUILayout.Button(new GUIContent("恢复"),GUILayout.Width(60))){
+                if(GUILayout.Button(new GUIContent("복원"),GUILayout.Width(60))){
                     string identifier = config.ProjectConf.bundlePathIdentifier;
                     string[] identifiers = identifier.Split(";");
                     string idStr = "";
@@ -167,7 +167,7 @@ namespace WeChatWASM
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(string.Empty);
-                if (GUILayout.Button(new GUIContent("了解Instant Game AutoStreaming", ""), linkStyle))
+                if (GUILayout.Button(new GUIContent("Instant Game AutoStreaming 이해하기", ""), linkStyle))
                 {
                     Application.OpenURL("https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/InstantGameGuide.md");
                 }
@@ -175,7 +175,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 #endif
-            foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "字体配置");
+            foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "폰트 구성");
             if (foldFontOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -194,7 +194,7 @@ namespace WeChatWASM
 
             GUIStyle linkStyle = GetLinkStyle();
 
-            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "基本信息");
+            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "기본 정보");
             if (foldBaseInfo)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -202,7 +202,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "启动Loading配置");
+            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "시작 로딩 설정");
             if (foldLoadingConfig)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -211,7 +211,7 @@ namespace WeChatWASM
                 GUILayout.BeginHorizontal();
                 string targetBg = "bgImageSrc";
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                tex = (Texture)EditorGUILayout.ObjectField("启动背景图/视频封面", tex, typeof(Texture2D), false);
+                tex = (Texture)EditorGUILayout.ObjectField("시작 배경 이미지/비디오 커버", tex, typeof(Texture2D), false);
                 var currentBgSrc = AssetDatabase.GetAssetPath(tex);
                 if (!string.IsNullOrEmpty(currentBgSrc) && currentBgSrc != formInputData[targetBg])
                 {
@@ -225,7 +225,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK功能选项");
+            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK 기능 옵션");
             if (foldSDKOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -233,7 +233,7 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "调试编译选项");
+            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "디버그 빌드 옵션");
             if (foldDebugOptions)
             {
                 OnSettingDebugOptions(false);
@@ -249,15 +249,15 @@ namespace WeChatWASM
                     formInput("dataFileSubPrefix", "Data File Sub Prefix");
 
                     EditorGUI.BeginDisabledGroup(true);
-                    formCheckbox("autoUploadFirstBundle", "构建后自动上传首包(?)", "仅在开启AutoStreaming生效", true);
+                    formCheckbox("autoUploadFirstBundle", "빌드 후 첫 번째 패키지 자동 업로드(?)", "AutoStreaming이 활성화된 경우에만 적용됩니다", true);
                     EditorGUI.EndDisabledGroup();
 
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                    GUILayout.Label(new GUIContent("清理AS配置(?)", "如需关闭AutoStreaming选用默认发布方案则需要清理AS配置项目。"), GUILayout.Width(140));
+                    GUILayout.Label(new GUIContent("AS 구성 정리(?)", "AutoStreaming을 비활성화하고 기본 게시 방안을 사용하려면 AS 구성 항목을 정리해야 합니다."), GUILayout.Width(140));
                     EditorGUI.BeginDisabledGroup(WXConvertCore.IsInstantGameAutoStreaming());
                     // It is not same as OnSettingsGUI(EditorWindow)
-                    if (GUILayout.Button(new GUIContent("恢复"), GUILayout.Width(60)))
+                    if (GUILayout.Button(new GUIContent("복원"), GUILayout.Width(60)))
                     {
                         var ProjectConf = miniGameProperty.FindPropertyRelative("ProjectConf");
                         string identifier = ProjectConf.FindPropertyRelative("bundlePathIdentifier").stringValue;
@@ -283,7 +283,7 @@ namespace WeChatWASM
 
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(string.Empty);
-                    if (GUILayout.Button(new GUIContent("了解Instant Game AutoStreaming", ""), linkStyle))
+                    if (GUILayout.Button(new GUIContent("Instant Game AutoStreaming 이해하기", ""), linkStyle))
                     {
                         Application.OpenURL("https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/InstantGameGuide.md");
                     }
@@ -292,7 +292,7 @@ namespace WeChatWASM
                 }
             }
 
-            foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "字体配置");
+            foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "폰트 구성");
             if (foldFontOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -317,11 +317,11 @@ namespace WeChatWASM
 
         private void OnSettingBaseInfo()
         {
-            this.formInput("appid", "游戏AppID");
-            this.formInput("cdn", "游戏资源CDN");
-            this.formInput("projectName", "小游戏项目名");
-            this.formIntPopup("orientation", "游戏方向", new[] { "Portrait", "Landscape", "LandscapeLeft", "LandscapeRight" }, new[] { 0, 1, 2, 3 });
-            this.formInput("memorySize", "UnityHeap预留内存(?)", "单位MB，预分配内存值，超休闲游戏256/中轻度496/重度游戏768，需预估游戏最大UnityHeap值以防止内存自动扩容带来的峰值尖刺。预估方法请查看GIT文档《优化Unity WebGL的内存》");
+            this.formInput("appid", "게임 AppID");
+            this.formInput("cdn", "게임 자원 CDN");
+            this.formInput("projectName", "小游戏 프로젝트명");
+            this.formIntPopup("orientation", "게임 방향", new[] { "Portrait", "Landscape", "LandscapeLeft", "LandscapeRight" }, new[] { 0, 1, 2, 3 });
+            this.formInput("memorySize", "UnityHeap 예약 메모리(?)", "단위 MB, 사전 할당 메모리 값. 초闲游戏 256/중경도 496/중무게임 768, 게임 최대 UnityHeap 값을 예측하여 메모리 자동 확장으로 인한 피크 상승을 방지합니다. 예측 방법은 GIT 문서 《Unity WebGL 메모리 최적화》를 참조하세요.");
         }
 
         private void OnSettingChooseFolder()
@@ -333,9 +333,9 @@ namespace WeChatWASM
                 formInputData[targetDst] = "";
             }
             EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-            GUILayout.Label(new GUIContent("导出路径(?)", "支持输入相对于项目根目录的相对路径，如：wxbuild"), GUILayout.Width(140));
+            GUILayout.Label(new GUIContent("내보내기 경로(?)", "프로젝트 루트 디렉토리에 대한 상대 경로 입력을 지원합니다. 예: wxbuild"), GUILayout.Width(140));
             formInputData[targetDst] = GUILayout.TextField(formInputData[targetDst], GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth - 270));
-            if (GUILayout.Button(new GUIContent("打开"), GUILayout.Width(40)))
+            if (GUILayout.Button(new GUIContent("열기"), GUILayout.Width(40)))
             {
                 if (!formInputData[targetDst].Trim().Equals(string.Empty))
                 {
@@ -343,9 +343,9 @@ namespace WeChatWASM
                 }
                 GUIUtility.ExitGUI();
             }
-            if (GUILayout.Button(new GUIContent("选择"), GUILayout.Width(40)))
+            if (GUILayout.Button(new GUIContent("선택"), GUILayout.Width(40)))
             {
-                var dstPath = EditorUtility.SaveFolderPanel("选择你的游戏导出目录", string.Empty, string.Empty);
+                var dstPath = EditorUtility.SaveFolderPanel("게임 내보내기 디렉토리 선택", string.Empty, string.Empty);
                 if (dstPath != string.Empty)
                 {
                     formInputData[targetDst] = dstPath;
@@ -358,20 +358,20 @@ namespace WeChatWASM
 
         private void OnSettingLoadingConfig()
         {
-            this.formInput("videoUrl", "加载阶段视频URL");
-            this.formIntPopup("assetLoadType", "首包资源加载方式", new[] { "CDN", "小游戏包内" }, new[] { 0, 1 });
-            this.formCheckbox("compressDataPackage", "压缩首包资源(?)", "将首包资源Brotli压缩, 降低资源大小. 注意: 首次启动耗时可能会增加200ms, 仅推荐使用小游戏分包加载时节省包体大小使用");
-            this.formInput("bundleExcludeExtensions", "不自动缓存文件类型(?)", "(使用;分割)当请求url包含资源'cdn+StreamingAssets'时会自动缓存，但StreamingAssets目录下不是所有文件都需缓存，此选项配置不需要自动缓存的文件拓展名。默认值json");
-            this.formInput("bundleHashLength", "Bundle名称Hash长度(?)", "自定义Bundle文件名中hash部分长度，默认值32，用于缓存控制。");
-            this.formInput("preloadFiles", "预下载文件列表(?)", "使用;间隔，支持模糊匹配");
+            this.formInput("videoUrl", "로딩 단계 비디오 URL");
+            this.formInput("assetLoadType", "첫 번째 패키지 자원 로딩 방식", new[] { "CDN", "작은게임 패키지 내" }, new[] { 0, 1 });
+            this.formCheckbox("compressDataPackage", "첫 번째 패키지 자원 압축(?)", "첫 번째 패키지 자원을 Brotli로 압축하여 자원 크기를 줄입니다. 참고: 초기 시작 시간은 약 200ms 증가할 수 있습니다.小游戏 분할 로딩 사용 시 패키지 크기 절감에만 추천합니다.");
+            this.formInput("bundleExcludeExtensions", "자동 캐시하지 않을 파일 유형(?)", "(;로 구분) 요청 URL에 'cdn+StreamingAssets'가 포함되면 자동으로 캐시되지만, StreamingAssets 디렉토리의 모든 파일을 캐시할 필요는 없습니다. 이 옵션은 자동 캐시하지 않을 파일 확장자를 설정합니다. 기본값: json");
+            this.formInput("bundleHashLength", "Bundle 이름 Hash 길이(?)", "Bundle 파일 이름의 Hash 부분 길이를 사용자 정의합니다. 기본값은 32이며, 캐시 제어에 사용됩니다.");
+            this.formInput("preloadFiles", "사전 다운로드 파일 목록(?)", ";로 구분하며, 패턴 매칭을 지원합니다.");
         }
 
         private void OnSettingSDKOptions()
         {
-            formCheckbox("useFriendRelation", "使用好友关系链");
-            formCheckbox("useMiniGameChat", "使用社交组件");
-            formCheckbox("preloadWXFont", "预加载微信字体(?)", "在game.js执行开始时预载微信系统字体，运行期间可使用WX.GetWXFont获取微信字体");
-            formCheckbox("disableMultiTouch", "禁止多点触控");
+            formCheckbox("useFriendRelation", "친구 관계망 사용");
+            formCheckbox("useMiniGameChat", "소셜 구성 요소 사용");
+            formCheckbox("preloadWXFont", "WeChat 폰트 사전 로드(?)", "game.js 실행 시작 시 WeChat 시스템 폰트를 사전 로드하며, 실행 중에 WX.GetWXFont를 사용하여 WeChat 폰트를 가져올 수 있습니다.");
+            formCheckbox("disableMultiTouch", "다중 터치 금지");
         }
 
         private void OnSettingDebugOptions(bool showDevBuild)
@@ -384,34 +384,34 @@ namespace WeChatWASM
             }
             this.formCheckbox("autoProfile", "Auto connect Profiler");
             this.formCheckbox("scriptOnly", "Scripts Only Build");
-            this.formCheckbox("il2CppOptimizeSize", "Il2Cpp Optimize Size(?)", "对应于Il2CppCodeGeneration选项，勾选时使用OptimizeSize(默认推荐)，生成代码小15%左右，取消勾选则使用OptimizeSpeed。游戏中大量泛型集合的高频访问建议OptimizeSpeed，在使用HybridCLR等第三方组件时只能用OptimizeSpeed。(Dotnet Runtime模式下该选项无效)", !UseIL2CPP);
+            this.formCheckbox("il2CppOptimizeSize", "Il2Cpp 최적화 크기(?)", "Il2CppCodeGeneration 옵션에 해당하며, 선택 시 OptimizeSize(기본 추천)를 사용하여 코드 크기를 약 15% 줄이고, 선택 해제 시 OptimizeSpeed를 사용합니다. 게임 내에서 제네릭 컬렉션의 고빈도 액세스는 OptimizeSpeed를 권장하며, HybridCLR 등 타사 구성 요소 사용 시에는 OptimizeSpeed만 사용할 수 있습니다. (Dotnet Runtime 모드에서는 이 옵션이 유효하지 않습니다)", !UseIL2CPP);
             this.formCheckbox("profilingFuncs", "Profiling Funcs");
             this.formCheckbox("profilingMemory", "Profiling Memory");
             this.formCheckbox("webgl2", "WebGL2.0");
-            this.formCheckbox("iOSPerformancePlus", "iOSPerformancePlus(?)", "是否使用iOS高性能+渲染方案，有助于提升渲染兼容性、降低WebContent进程内存");
-            this.formCheckbox("EmscriptenGLX", "EmscriptenGLX(?)", "是否使用EmscriptenGLX渲染方案");
-            this.formCheckbox("iOSMetal", "iOSMetal(?)", "是否使用iOSMetal渲染方案，需要开启iOS高性能+模式，有助于提升运行性能，降低iOS功耗");
+            this.formCheckbox("iOSPerformancePlus", "iOS 성능 모드+(?)", "iOS 고성능+ 렌더링 방안을 사용할지 여부로, 렌더링 호환성을 향상시키고 WebContent 프로세스 메모리를 줄이는 데 도움이 됩니다.");
+            this.formCheckbox("EmscriptenGLX", "EmscriptenGLX(?)", "EmscriptenGLX 렌더링 방안을 사용할지 여부");
+            this.formCheckbox("iOSMetal", "iOS Metal(?)", "iOS Metal 렌더링 방안을 사용할지 여부, iOS 고성능+ 모드가 활성화되어 있어야 하며, 실행 성능 향상과 iOS 전력 소비 감소에 도움이 됩니다.");
             this.formCheckbox("deleteStreamingAssets", "Clear Streaming Assets");
             this.formCheckbox("cleanBuild", "Clean WebGL Build");
             // this.formCheckbox("cleanCloudDev", "Clean Cloud Dev");
-            this.formCheckbox("fbslim", "首包资源优化(?)", "导出时自动清理UnityEditor默认打包但游戏项目从未使用的资源，瘦身首包资源体积。（团结引擎已无需开启该能力）", UnityUtil.GetEngineVersion() > 0, (res) =>
+            this.formCheckbox("fbslim", "첫 번째 패키지 자원 최적화(?)", "내보낼 때 UnityEditor 기본 패키징이지만 게임 프로젝트에서 사용하지 않은 자원을 자동으로 정리하여 첫 번째 패키지 자원 크기를 줄입니다. (团结 엔진은 이 기능이 더 이상 필요하지 않습니다)", UnityUtil.GetEngineVersion() > 0, (res) =>
             {
-                var fbWin = EditorWindow.GetWindow(typeof(WXFbSettingWindow), false, "首包资源优化配置面板", true);
+                var fbWin = EditorWindow.GetWindow(typeof(WXFbSettingWindow), false, "첫 번째 패키지 자원 최적화 구성 패널", true);
                 fbWin.minSize = new Vector2(680, 350);
                 fbWin.Show();
             });
-            this.formCheckbox("autoAdaptScreen", "自适应屏幕尺寸(?)", "移动端旋转屏幕和PC端拉伸窗口时，自动调整画布尺寸");
-            this.formCheckbox("showMonitorSuggestModal", "显示优化建议弹窗");
-            this.formCheckbox("enableProfileStats", "显示性能面板");
-            this.formCheckbox("enableRenderAnalysis", "显示渲染日志(dev only)");
-            this.formCheckbox("brotliMT", "brotli多线程压缩(?)", "开启多线程压缩可以提高出包速度，但会降低压缩率。如若不使用wasm代码分包请勿用多线程出包上线");
+            this.formCheckbox("autoAdaptScreen", "화면 크기 자동 조정(?)", "모바일 기기에서 화면 회전 및 PC에서 창 크기 조정 시 캔버스 크기를 자동으로 조정합니다.");
+            this.formCheckbox("showMonitorSuggestModal", "최적화 제안 팝업 표시");
+            this.formCheckbox("enableProfileStats", "성능 패널 표시");
+            this.formCheckbox("enableRenderAnalysis", "렌더링 로그 표시(개발자 전용)");
+            this.formCheckbox("brotliMT", "brotli 다중 스레드 압축(?)", "다중 스레드 압축을 사용하면 패키지 생성 속도가 향상되지만 압축률이 낮아집니다. wasm 코드 분할 패키지를 사용하지 않는 경우 다중 스레드로 패키지를 생성하지 마세요.");
 #if UNITY_6000_0_OR_NEWER
-            this.formCheckbox("enableWasm2023", "WebAssembly 2023(?)", "WebAssembly 2023包括对WebAssembly.Table和BigInt的支持。（Android (Android 10 or later recommended), iOS (iOS 15 or later recommended)）");
+            this.formCheckbox("enableWasm2023", "WebAssembly 2023(?)", "WebAssembly 2023은 WebAssembly.Table과 BigInt를 지원합니다. (Android (Android 10 이상 권장), iOS (iOS 15 이상 권장))");
 #endif
 
             if (m_EnablePerfTool)
             {
-                this.formCheckbox("enablePerfAnalysis", "集成性能分析工具", "将性能分析工具集成入Development Build包中", false, null, OnPerfAnalysisFeatureToggleChanged);
+                this.formCheckbox("enablePerfAnalysis", "통합 성능 분석 도구", "성능 분석 도구를 Development Build 패키지에 통합합니다", false, null, OnPerfAnalysisFeatureToggleChanged);
             }
 
             EditorGUILayout.EndVertical();
@@ -419,25 +419,25 @@ namespace WeChatWASM
 
         private void OnSettingFontOptions()
         {
-            formCheckbox("CJK_Unified_Ideographs", "基本汉字(?)", "Unicode [0x4e00, 0x9fff]");
-            formCheckbox("C0_Controls_and_Basic_Latin", "基本拉丁语（英文大小写、数字、英文标点）(?)", "Unicode [0x0, 0x7f]");
-            formCheckbox("CJK_Symbols_and_Punctuation", "中文标点符号(?)", "Unicode [0x3000, 0x303f]");
-            formCheckbox("General_Punctuation", "通用标点符号(?)", "Unicode [0x2000, 0x206f]");
-            formCheckbox("Enclosed_CJK_Letters_and_Months", "CJK字母及月份(?)", "Unicode [0x3200, 0x32ff]");
-            formCheckbox("Vertical_Forms", "中文竖排标点(?)", "Unicode [0xfe10, 0xfe1f]");
-            formCheckbox("CJK_Compatibility_Forms", "CJK兼容符号(?)", "Unicode [0xfe30, 0xfe4f]");
-            formCheckbox("Miscellaneous_Symbols", "杂项符号(?)", "Unicode [0x2600, 0x26ff]");
-            formCheckbox("CJK_Compatibility", "CJK特殊符号(?)", "Unicode [0x3300, 0x33ff]");
-            formCheckbox("Halfwidth_and_Fullwidth_Forms", "全角ASCII、全角中英文标点、半宽片假名、半宽平假名、半宽韩文字母(?)", "Unicode [0xff00, 0xffef]");
-            formCheckbox("Dingbats", "装饰符号(?)", "Unicode [0x2700, 0x27bf]");
-            formCheckbox("Letterlike_Symbols", "字母式符号(?)", "Unicode [0x2100, 0x214f]");
-            formCheckbox("Enclosed_Alphanumerics", "带圈或括号的字母数字(?)", "Unicode [0x2460, 0x24ff]");
-            formCheckbox("Number_Forms", "数字形式(?)", "Unicode [0x2150, 0x218f]");
-            formCheckbox("Currency_Symbols", "货币符号(?)", "Unicode [0x20a0, 0x20cf]");
-            formCheckbox("Arrows", "箭头(?)", "Unicode [0x2190, 0x21ff]");
-            formCheckbox("Geometric_Shapes", "几何图形(?)", "Unicode [0x25a0, 0x25ff]");
-            formCheckbox("Mathematical_Operators", "数学运算符号(?)", "Unicode [0x2200, 0x22ff]");
-            formInput("CustomUnicode", "自定义Unicode(?)", "将填入的所有字符强制加入字体预加载列表");
+            formCheckbox("CJK_Unified_Ideographs", "기본 한자(?)", "Unicode [0x4e00, 0x9fff]");
+            formCheckbox("C0_Controls_and_Basic_Latin", "기본 라틴어(영문 대소문자, 숫자, 영문 구두점)(?)", "Unicode [0x0, 0x7f]");
+            formCheckbox("CJK_Symbols_and_Punctuation", "중국어 구두점 기호(?)", "Unicode [0x3000, 0x303f]");
+            formCheckbox("General_Punctuation", "일반 구두점 기호(?)", "Unicode [0x2000, 0x206f]");
+            formCheckbox("Enclosed_CJK_Letters_and_Months", "CJK 알파벳 및 월(?)", "Unicode [0x3200, 0x32ff]");
+            formCheckbox("Vertical_Forms", "중국어 세로 배열 구두점(?)", "Unicode [0xfe10, 0xfe1f]");
+            formCheckbox("CJK_Compatibility_Forms", "CJK 호환 기호(?)", "Unicode [0xfe30, 0xfe4f]");
+            formCheckbox("Miscellaneous_Symbols", "기타 기호(?)", "Unicode [0x2600, 0x26ff]");
+            formCheckbox("CJK_Compatibility", "CJK 특수 기호(?)", "Unicode [0x3300, 0x33ff]");
+            formCheckbox("Halfwidth_and_Fullwidth_Forms", "전각 ASCII, 전각 중영문 구두점, 반폭 카타카나, 반폭 히라가나, 반폭 한글 자모(?)", "Unicode [0xff00, 0xffef]");
+            formCheckbox("Dingbats", "장식 기호(?)", "Unicode [0x2700, 0x27bf]");
+            formCheckbox("Letterlike_Symbols", "문자형 기호(?)", "Unicode [0x2100, 0x214f]");
+            formCheckbox("Enclosed_Alphanumerics", "동그라미 또는 괄호로 감싸진 알파벳 숫자(?)", "Unicode [0x2460, 0x24ff]");
+            formCheckbox("Number_Forms", "숫자 형식(?)", "Unicode [0x2150, 0x218f]");
+            formCheckbox("Currency_Symbols", "통화 기호(?)", "Unicode [0x20a0, 0x20cf]");
+            formCheckbox("Arrows", "화살표(?)", "Unicode [0x2190, 0x21ff]");
+            formCheckbox("Geometric_Shapes", "기하 도형(?)", "Unicode [0x25a0, 0x25ff]");
+            formCheckbox("Mathematical_Operators", "수학 연산 기호(?)", "Unicode [0x2200, 0x22ff]");
+            formInput("CustomUnicode", "사용자 정의 Unicode(?)", "입력한 모든 문자를 폰트 사전 로드 목록에 강제로 추가합니다.");
         }
 
 
@@ -450,30 +450,30 @@ namespace WeChatWASM
             linkStyle.alignment = TextAnchor.UpperLeft;
             linkStyle.wordWrap = true;
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("更多配置项"), GUILayout.Width(100), GUILayout.Height(25)))
+            if (GUILayout.Button(new GUIContent("추가 구성 항목"), GUILayout.Width(100), GUILayout.Height(25)))
             {
                 var minigameConfig = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/WX-WASM-SDK-V2/Editor/MiniGameConfig.asset");
                 Selection.activeObject = minigameConfig;
                 GUIUtility.ExitGUI();
             }
-            if (GUILayout.Button(new GUIContent("WebGL转小游戏(不常用)"), GUILayout.Width(150), GUILayout.Height(25)))
+            if (GUILayout.Button(new GUIContent("WebGL를 작은게임으로 변환(자주 사용하지 않음)"), GUILayout.Width(150), GUILayout.Height(25)))
             {
                 this.saveData();
                 if (WXConvertCore.DoExport(false) == WXConvertCore.WXExportError.SUCCEED)
                 {
-                    window.ShowNotification(new GUIContent("转换完成"));
+                    window.ShowNotification(new GUIContent("변환 완료"));
                 }
 
                 GUIUtility.ExitGUI();
             }
             EditorGUILayout.LabelField(string.Empty, GUILayout.MinWidth(10));
-            if (GUILayout.Button(new GUIContent("生成并转换"), GUILayout.Width(100), GUILayout.Height(25)))
+            if (GUILayout.Button(new GUIContent("생성 및 변환"), GUILayout.Width(100), GUILayout.Height(25)))
             {
                 this.saveData();
                 if (WXConvertCore.DoExport() == WXConvertCore.WXExportError.SUCCEED)
                 {
                     if (!WXConvertCore.IsInstantGameAutoStreaming())
-                        window.ShowNotification(new GUIContent("转换完成"));
+                        window.ShowNotification(new GUIContent("변환 완료"));
                     else
                     {
 #if (UNITY_WEBGL || WEIXINMINIGAME) && UNITY_INSTANTGAME
@@ -482,22 +482,23 @@ namespace WeChatWASM
                         {
                             if (Unity.InstantGame.IGBuildPipeline.UploadWeChatDataFile(WXConvertCore.FirstBundlePath))
                             {
-                                Debug.Log("转换完成并成功上传首包资源");
-                                window.ShowNotification(new GUIContent("转换完成并成功上传"));
+                                Debug.Log("변환이 완료되었고 첫 번째 패키지 자원이 성공적으로 업로드되었습니다");
+                                window.ShowNotification(new GUIContent("변환 완료 및 업로드 성공"));
+                                window.ShowNotification(new GUIContent("변환 완료 및 업로드 성공"));
                             }
                             else
                             {
-                                Debug.LogError("首包资源上传失败，请检查网络以及Auto Streaming配置是否正确。");
-                                window.ShowNotification(new GUIContent("上传失败"));
+                                Debug.LogError("첫 번째 패키지 자원 업로드에 실패했습니다. 네트워크와 Auto Streaming 설정을 확인하십시오.");
+                                window.ShowNotification(new GUIContent("업로드 실패"));
                             }
                         }
                         else
                         {
-                            Debug.LogError("转换失败");
-                            window.ShowNotification(new GUIContent("转换失败"));
+                            Debug.LogError("변환 실패");
+                            window.ShowNotification(new GUIContent("변환 실패"));
                         }
 #else
-                        window.ShowNotification(new GUIContent("转换完成"));
+                        window.ShowNotification(new GUIContent("변환 완료"));
 #endif
                     }
                 }
@@ -507,7 +508,7 @@ namespace WeChatWASM
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Empty);
-            if (GUILayout.Button(new GUIContent("了解如何实现自定义构建", ""), linkStyle))
+            if (GUILayout.Button(new GUIContent("사용자 정의 빌드 구현 방법 이해하기", ""), linkStyle))
             {
                 Application.OpenURL("https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/DevelopmentQAList.html#_13-%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A5%E5%85%A5%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B");
                 GUIUtility.ExitGUI();
@@ -690,7 +691,7 @@ namespace WeChatWASM
             this.setData("brotliMT", CompileOptions.brotliMT);
 #if UNITY_6000_0_OR_NEWER
             this.setData("enableWasm2023", CompileOptions.enableWasm2023);
-#endif      
+#endif
             this.setData("enablePerfAnalysis", CompileOptions.enablePerfAnalysis);
         }
 
@@ -1140,8 +1141,8 @@ namespace WeChatWASM
             if (setting != null)
             {
                 EditorGUILayout.LabelField("", GUILayout.Width(10));
-                // 配置按钮
-                if (GUILayout.Button(new GUIContent("设置"), GUILayout.Width(40), GUILayout.Height(18)))
+                // 설정 버튼
+                if (GUILayout.Button(new GUIContent("설정"), GUILayout.Width(40), GUILayout.Height(18)))
                 {
                     setting?.Invoke(true);
                 }
@@ -1157,7 +1158,7 @@ namespace WeChatWASM
 
         private void OnDevelopmentBuildToggleChanged(bool InNewValue)
         {
-            // 针对non-dev build，取消性能分析工具的集成
+            // non-dev 빌드의 경우 성능 분석 도구 통합을 취소합니다
             if (!InNewValue)
             {
                 this.setData("enablePerfAnalysis", false);
@@ -1166,7 +1167,7 @@ namespace WeChatWASM
 
         private void OnPerfAnalysisFeatureToggleChanged(bool InNewValue)
         {
-            // 针对non-dev build，取消性能分析工具的集成
+            // non-dev 빌드의 경우 성능 분석 도구 통합을 취소합니다
             if (!formCheckboxData["developBuild"] && InNewValue)
             {
                 this.setData("enablePerfAnalysis", false);
@@ -1184,7 +1185,7 @@ namespace WeChatWASM
             if (shouldAddSymbol)
             {
                 shouldAddSymbol = false;
-                EditorUtility.DisplayDialog("警告", $"当前Unity版本({Application.unityVersion})不在性能分析工具适配范围内(2021.2-2023.1), 性能分析工具将被禁用。", "确定");
+                EditorUtility.DisplayDialog("경고", $"현재 Unity 버전({Application.unityVersion})은 성능 분석 도구와 호환되지 않습니다(2021.2-2023.1), 성능 분석 도구가 비활성화됩니다.", "확인");
                 config.CompileOptions.enablePerfAnalysis = false;
                 this.setData("enablePerfAnalysis", false);
             }
@@ -1199,7 +1200,7 @@ namespace WeChatWASM
             }
             else
             {
-                // 删除掉已有的ENABLE_WX_PERF_FEATURE
+                // 기존 ENABLE_WX_PERF_FEATURE 삭제
                 if (defineSymbols.IndexOf(MACRO_ENABLE_WX_PERF_FEATURE) != -1)
                 {
                     defineSymbols = defineSymbols.Replace(MACRO_ENABLE_WX_PERF_FEATURE, "").Replace(";;", ";").Trim(';');
@@ -1210,25 +1211,25 @@ namespace WeChatWASM
 
         public static bool IsAbsolutePath(string path)
         {
-            // 检查是否为空或空白
+            // 비어있거나 공백인지 확인
             if (string.IsNullOrWhiteSpace(path))
             {
                 return false;
             }
 
-            // 在 Windows 上，检查驱动器字母或网络路径
+            // Windows에서 드라이브 문자 또는 네트워크 경로인지 확인
             if (Application.platform == RuntimePlatform.WindowsEditor && Path.IsPathRooted(path))
             {
                 return true;
             }
 
-            // 在 Unix/Linux 和 macOS 上，检查是否以 '/' 开头
+            // Unix/Linux 및 macOS에서 '/'로 시작하는지 확인
             if (Application.platform == RuntimePlatform.OSXEditor && path.StartsWith("/"))
             {
                 return true;
             }
 
-            return false; // 否则为相对路径
+            return false; // 그렇지 않으면 상대 경로
         }
 
         public static string GetAbsolutePath(string path)

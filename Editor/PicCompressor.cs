@@ -8,12 +8,12 @@ namespace WeChatWASM
     public class PicTask
     {
         /// <summary>
-        /// 0: png, 1:astc, 2:etc2，3：pvrtc
+        /// 0: png, 1:astc, 2:etc2, 3:pvrtc
         /// </summary>
         public int type;
 
         /// <summary>
-        /// 图片路径
+        /// 이미지 경로
         /// </summary>
         public string src;
         public string dst;
@@ -22,7 +22,7 @@ namespace WeChatWASM
     }
 
     /// <summary>
-    /// 基于ImageMagick的图片处理
+    /// ImageMagick 기반의 이미지 처리
     /// </summary>
     ///
     public static class PicCompressor
@@ -31,7 +31,7 @@ namespace WeChatWASM
         private static string PVRTCPath;
         private static string PNGPath;
         private static string DXT5Path;
-        private static Semaphore sempore = new Semaphore(8, 8); // 最多设置8个进程
+        private static Semaphore sempore = new Semaphore(8, 8); // 최대 8개의 프로세스 설정
 
         public static string GetASTCPath()
         {

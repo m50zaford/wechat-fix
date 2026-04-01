@@ -62,14 +62,14 @@ namespace WeChatWASM
             linkStyle.alignment = TextAnchor.UpperLeft;
             linkStyle.wordWrap = true;
 
-            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "基本信息");
+            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "기본 정보");
             if (foldBaseInfo)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
-                this.formInput("appid", "小游戏试玩AppID");
-                this.formInput("projectName", "小游戏试玩项目名");
-                this.formIntPopup("orientation", "游戏方向", new[] { "Portrait", "Landscape" }, new[] { 0, 1, 2, 3 });
-                this.formInput("memorySize", "UnityHeap预留内存(?)", "单位MB，预分配内存值，超休闲游戏256/中轻度496/重度游戏768，需预估游戏最大UnityHeap值以防止内存自动扩容带来的峰值尖刺。预估方法请查看GIT文档《优化Unity WebGL的内存》");
+                this.formInput("appid", "게임 시도용 AppID");
+                this.formInput("projectName", "게임 시도용 프로젝트명");
+                this.formIntPopup("orientation", "게임 방향", new[] { "Portrait", "Landscape" }, new[] { 0, 1, 2, 3 });
+                this.formInput("memorySize", "UnityHeap 예약 메모리(?)", "단위 MB, 사전 할당 메모리 값. 초闲游戏 256/중경도 496/중무游戏 768, 게임 최대 UnityHeap 값을 예측하여 메모리 자동 확장으로 인한 피크 상승을 방지합니다. 예측 방법은 GIT 문서 《Unity WebGL 메모리 최적화》를 참조하세요.");
 
                 GUILayout.BeginHorizontal();
                 string targetDst = "dst";
@@ -78,9 +78,9 @@ namespace WeChatWASM
                     formInputData[targetDst] = "";
                 }
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                GUILayout.Label(new GUIContent("导出路径(?)", "支持输入相对于项目根目录的相对路径，如：wxbuild"), GUILayout.Width(140));
+                GUILayout.Label(new GUIContent("내보내기 경로(?)", "프로젝트 루트 디렉토리에 대한 상대 경로 입력을 지원합니다. 예: wxbuild"), GUILayout.Width(140));
                 formInputData[targetDst] = GUILayout.TextField(formInputData[targetDst], GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth - 270));
-                if (GUILayout.Button(new GUIContent("打开"), GUILayout.Width(40)))
+                if (GUILayout.Button(new GUIContent("열기"), GUILayout.Width(40)))
                 {
                     if (!formInputData[targetDst].Trim().Equals(string.Empty))
                     {
@@ -88,9 +88,9 @@ namespace WeChatWASM
                     }
                     GUIUtility.ExitGUI();
                 }
-                if (GUILayout.Button(new GUIContent("选择"), GUILayout.Width(40)))
+                if (GUILayout.Button(new GUIContent("선택"), GUILayout.Width(40)))
                 {
-                    var dstPath = EditorUtility.SaveFolderPanel("选择你的游戏导出目录", string.Empty, string.Empty);
+                    var dstPath = EditorUtility.SaveFolderPanel("게임 내보내기 디렉토리 선택", string.Empty, string.Empty);
                     if (dstPath != string.Empty)
                     {
                         formInputData[targetDst] = dstPath;
@@ -104,12 +104,12 @@ namespace WeChatWASM
                 EditorGUILayout.EndVertical();
             }
 
-            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "调试编译选项");
+            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "디버그 빌드 옵션");
             if (foldDebugOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
                 this.formCheckbox("developBuild", "Development Build", "", false, null, OnDevelopmentBuildToggleChanged);
-                this.formCheckbox("il2CppOptimizeSize", "Il2Cpp Optimize Size(?)", "对应于Il2CppCodeGeneration选项，勾选时使用OptimizeSize(默认推荐)，生成代码小15%左右，取消勾选则使用OptimizeSpeed。游戏中大量泛型集合的高频访问建议OptimizeSpeed，在使用HybridCLR等第三方组件时只能用OptimizeSpeed。(Dotnet Runtime模式下该选项无效)", !UseIL2CPP);
+                this.formCheckbox("il2CppOptimizeSize", "Il2Cpp 최적화 크기(?)", "Il2CppCodeGeneration 옵션에 해당하며, 선택 시 OptimizeSize(기본 추천)를 사용하여 코드 크기를 약 15% 줄이고, 선택 해제 시 OptimizeSpeed를 사용합니다. 게임 내에서 제네릭 컬렉션의 고빈도 액세스는 OptimizeSpeed를 권장하며, HybridCLR 등 타사 구성 요소 사용 시에는 OptimizeSpeed만 사용할 수 있습니다. (Dotnet Runtime 모드에서는 이 옵션이 유효하지 않습니다)", !UseIL2CPP);
                 this.formCheckbox("profilingFuncs", "Profiling Funcs");
                 this.formCheckbox("webgl2", "WebGL2.0");
                 EditorGUILayout.EndVertical();
@@ -127,12 +127,12 @@ namespace WeChatWASM
             linkStyle.wordWrap = true;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Empty, GUILayout.MinWidth(10));
-            if (GUILayout.Button(new GUIContent("生成并转换"), GUILayout.Width(100), GUILayout.Height(25)))
+            if (GUILayout.Button(new GUIContent("생성 및 변환"), GUILayout.Width(100), GUILayout.Height(25)))
             {
                 this.saveData();
                 if (WXPlayableConvertCore.DoExport() == WXConvertCore.WXExportError.SUCCEED)
                 {
-                    window.ShowNotification(new GUIContent("转换完成"));
+                    window.ShowNotification(new GUIContent("변환 완료"));
                 }
                 GUIUtility.ExitGUI();
             }
@@ -140,7 +140,7 @@ namespace WeChatWASM
         }
         private void OnDevelopmentBuildToggleChanged(bool InNewValue)
         {
-            // 针对non-dev build，取消性能分析工具的集成
+            // non-dev 빌드의 경우 성능 분석 도구 통합을 취소합니다
             if (!InNewValue)
             {
                 this.setData("enablePerfAnalysis", false);
@@ -239,8 +239,8 @@ namespace WeChatWASM
             if (setting != null)
             {
                 EditorGUILayout.LabelField("", GUILayout.Width(10));
-                // 配置按钮
-                if (GUILayout.Button(new GUIContent("设置"), GUILayout.Width(40), GUILayout.Height(18)))
+                // 설정 버튼
+                if (GUILayout.Button(new GUIContent("설정"), GUILayout.Width(40), GUILayout.Height(18)))
                 {
                     setting?.Invoke(true);
                 }
@@ -325,25 +325,25 @@ namespace WeChatWASM
 
         public static bool IsAbsolutePath(string path)
         {
-            // 检查是否为空或空白
+            // 비어있거나 공백인지 확인
             if (string.IsNullOrWhiteSpace(path))
             {
                 return false;
             }
 
-            // 在 Windows 上，检查驱动器字母或网络路径
+            // Windows에서 드라이브 문자 또는 네트워크 경로인지 확인
             if (Application.platform == RuntimePlatform.WindowsEditor && Path.IsPathRooted(path))
             {
                 return true;
             }
 
-            // 在 Unix/Linux 和 macOS 上，检查是否以 '/' 开头
+            // Unix/Linux 및 macOS에서 '/'로 시작하는지 확인
             if (Application.platform == RuntimePlatform.OSXEditor && path.StartsWith("/"))
             {
                 return true;
             }
 
-            return false; // 否则为相对路径
+            return false; // 그렇지 않으면 상대 경로
         }
 
         public static string GetAbsolutePath(string path)

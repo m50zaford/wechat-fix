@@ -7,16 +7,16 @@ namespace WeChatWASM
 
     public class WXPlayableWin : EditorWindow
     {
-        [MenuItem("微信小游戏 / 转换小游戏试玩", false, 2)]
+        [MenuItem("WeChat 작은게임 / 작은게임 시도용 변환", false, 2)]
         public static void Open()
         {
-            var win = GetWindow(typeof(WXPlayableWin), false, "微信小游戏试玩转换工具面板");
+            var win = GetWindow(typeof(WXPlayableWin), false, "WeChat 작은게임 시도용 변환 도구 패널");
             win.minSize = new Vector2(350, 400);
             win.position = new Rect(200, 200, 600, 300);
             win.Show();
         }
 
-        // 向前兼容，请使用 WXConvertCore.cs
+        // 이전 버전과의 호환성을 위해 WXConvertCore.cs를 사용하십시오
         public static WXExportError DoExport(bool buildWebGL = true)
         {
             return WXPlayableConvertCore.DoExport(buildWebGL);

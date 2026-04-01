@@ -81,16 +81,16 @@ namespace WeChatWASM
         public static WXEditorScriptObject config => isPlayableBuild ? WXPlayableConvertCore.GetFakeScriptObject() : UnityUtil.GetEditorConf();
 
         public static string defaultTemplateDir => isPlayableBuild ? "playable-default" : "wechat-default";
-        public static string webglDir = "webgl"; // 导出的webgl目录
-        public static string miniGameDir = "minigame"; // 生成小游戏的目录
-        public static string audioDir = "Assets"; // 音频资源目录
+        public static string webglDir = "webgl"; // 내보내기 webgl 디렉토리
+        public static string miniGameDir = "minigame"; // 생성小游戏 디렉토리
+        public static string audioDir = "Assets"; // 오디오 자원 디렉토리
         public static string frameworkDir = "framework";
         public static string dataFileSize = string.Empty;
         public static string codeMd5 = string.Empty;
         public static string dataMd5 = string.Empty;
         public static string defaultImgSrc = "Assets/WX-WASM-SDK-V2/Runtime/wechat-default/images/background.jpg";
         /// <summary>
-        /// 是否在构建试玩，构建开始前修改值，构建结束后恢复值
+        /// 시도용 빌드 중인지 여부, 빌드 시작 전에 값을 수정하고 빌드结束后에 값을 복원합니다
         /// </summary>
         public static bool isPlayableBuild = false;
 
@@ -106,7 +106,7 @@ namespace WeChatWASM
 #endif
             }
         }
-        // 是否使用 iOS Metal 渲染
+        // iOS Metal 렌더링을 사용할지 여부
         public static bool UseiOSMetal
         {
             get
@@ -114,7 +114,7 @@ namespace WeChatWASM
                 return config.CompileOptions.enableiOSMetal;
             }
         }
-        // 用于replaceRules判断是否需要注入相关的修改
+        // replaceRules에서 관련 수정을 주입할지 여부를 판단합니다
         public static bool UseEmscriptenGLX
         {
             get
@@ -127,21 +127,21 @@ namespace WeChatWASM
         //     isPlayableBuild = enabled;
         // }
         /// <summary>
-        /// 导出前的初始配置
-        /// 小游戏模式和试玩模式都会使用这个函数，如果要在这个函数加新方法，建议都以不兼容试玩模式看待
+        /// 내보내기 전의 초기 설정
+        /// 작은게임 모드와 시도용 모드 모두 이 함수를 사용합니다. 이 함수에 새로운 메서드를 추가할 경우, 시도용 모드와 호환되지 않는다고 간주하는 것이 좋습니다
         /// </summary>
         public static void PreInit()
         {
             CheckBuildTarget();
             Init();
-            // 可能有顺序要求？如果没要求，可挪到此函数外
+            // 순서가 필요한 경우가 있을 수 있습니다? 필요하지 않다면 이 함수 외부로 이동할 수 있습니다
             if (!isPlayableBuild)
             {
                 ProcessWxPerfBinaries();
             }
-            // iOS metal 的相关特性
+            // iOS Metal 관련 기능
             ProcessWxiOSMetalBinaries();
-            // emscriptenglx的相关特性
+            // emscriptenglx 관련 기능
             ProcessWxEmscriptenGLXBinaries();
             MakeEnvForLuaAdaptor();
             // JSLib
@@ -154,28 +154,28 @@ namespace WeChatWASM
         {
             if (!CheckSDK())
             {
-                Debug.LogError("若游戏曾使用旧版本微信SDK，需删除 Assets/WX-WASM-SDK 文件夹后再导入最新工具包。");
+                Debug.LogError("게임에서 이전 버전의 WeChat SDK를 사용한 경우, Assets/WX-WASM-SDK 폴더를 삭제한 후 최신 도구 패키지를 다시 가져와야 합니다.");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             if (!isPlayableBuild && !CheckBuildTemplate())
             {
-                Debug.LogError("因构建模板检查失败终止导出。");
+                Debug.LogError("빌드 템플릿 확인에 실패하여 내보내기를 중단합니다.");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             if (!isPlayableBuild && CheckInvalidPerfIntegration())
             {
-                Debug.LogError("性能分析工具只能用于Development Build, 终止导出!");
+                Debug.LogError("성능 분석 도구는 Development Build에서만 사용할 수 있습니다. 내보내기를 중단합니다!");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             dynamic config = isPlayableBuild ? UnityUtil.GetPlayableEditorConf() : UnityUtil.GetEditorConf();
             if (config.ProjectConf.relativeDST == string.Empty)
             {
-                Debug.LogError("请先配置游戏导出路径");
+                Debug.LogError("먼저 게임 내보내기 경로를 설정하십시오");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             return WXExportError.SUCCEED;
         }
-        // 可以调用这个来集成
+        // 통합을 위해 이 함수를 호출할 수 있습니다
         public static WXExportError DoExport(bool buildWebGL = true)
         {
             LifeCycleEvent.Init();
@@ -188,7 +188,7 @@ namespace WeChatWASM
 
             PreInit();
 
-            // 记录上次导出的brotliType
+            // 마지막 내보내기의 brotliType 기록
             {
                 var filePath = Path.Combine(config.ProjectConf.DST, miniGameDir, "unity-namespace.js");
                 string content = string.Empty;
@@ -205,7 +205,7 @@ namespace WeChatWASM
             }
 
             {
-                // 仅删除StreamingAssets目录
+                // StreamingAssets 디렉토리만 삭제
                 if (config.CompileOptions.DeleteStreamingAssets)
                 {
                     UnityUtil.DelectDir(Path.Combine(config.ProjectConf.DST, webglDir + "/StreamingAssets"));
@@ -218,7 +218,7 @@ namespace WeChatWASM
 
                 if (WXExtEnvDef.GETDEF("UNITY_2021_2_OR_NEWER") && !config.CompileOptions.DevelopBuild)
                 {
-                    // 如果是2021版本，官方symbols产生有BUG，这里需要用工具将函数名提取出来
+                    // 2021 버전인 경우, 공식 symbols 생성에 버그가 있으므로 도구를 사용하여 함수 이름을 추출해야 합니다
                     var symFile1 = "";
                     if (!UseIL2CPP)
                     {
@@ -262,7 +262,7 @@ namespace WeChatWASM
                     {
                         if (!result)
                         {
-                            Debug.LogWarning("[首资源包跳过优化]：因处理失败自动跳过" + info);
+                            Debug.LogWarning("[첫 번째 자원 패키지 최적화 건너뛰기] : 처리 실패로 인해 자동으로 건너뜁니다" + info);
                         }
 
                         finishExport();
@@ -301,11 +301,11 @@ namespace WeChatWASM
         {
             try
             {
-                string metaPath = AssetDatabase.GetTextMetaFilePathFromAssetPath(inAssetPath); // 获取.meta文件的路径
+                string metaPath = AssetDatabase.GetTextMetaFilePathFromAssetPath(inAssetPath); // .meta 파일 경로 가져오기
                 string enableFlagStr = inEnabled ? "1" : "0";
 
-                // 读取.meta文件
-                // 处理WebGL
+                // .meta 파일 읽기
+                // WebGL 처리
                 string metaContent = File.ReadAllText(metaPath);
                 int idxWebGLEnableFlag = GetEnabledFlagStringIndex(metaContent, "WebGL: WebGL");
 
@@ -315,14 +315,14 @@ namespace WeChatWASM
 
                 metaContent = metaContent.Remove(idxWeixinMiniGameEnableFlag, 1).Insert(idxWeixinMiniGameEnableFlag, enableFlagStr);
 
-                // 写回.meta文件
+                // .meta 파일에 쓰기
 
                 File.WriteAllText(metaPath, metaContent);
                 AssetDatabase.ImportAsset(inAssetPath, ImportAssetOptions.ForceUpdate);
             }
             catch (Exception ex)
             {
-                // 避免 Error 日志阻塞打包流程
+                // Error 로그가 패키징 프로세스를 차단하지 않도록 합니다
                 UnityEngine.Debug.LogWarning($"Failed to enable plugin asset: {ex.Message}");
             }
         }
@@ -344,7 +344,7 @@ namespace WeChatWASM
             {
                 string jsLibRootDir = $"Assets{DS}WX-WASM-SDK-V2{DS}Runtime{DS}Plugins{DS}";
 
-                // 下方顺序不可变动
+                // 아래 순서는 변경할 수 없습니다
                 wxPerfPlugins = new string[]
                 {
                      $"{jsLibRootDir}WxPerfJsBridge.jslib",
@@ -415,7 +415,7 @@ namespace WeChatWASM
             {
                 string glLibRootDir = $"Assets{DS}WX-WASM-SDK-V2{DS}Runtime{DS}Plugins{DS}";
 
-                // 下方顺序不要变动
+                // 아래 순서는 변경하지 마십시오
                 glLibs = new string[]
                 {
                     $"{glLibRootDir}libemscriptenglx.a",
@@ -424,7 +424,7 @@ namespace WeChatWASM
             }
 
             {
-                // unity2022, tuanjie lib引入
+                // unity2022, tuanjie lib 도입
                 bool showEnableGLX2022Plugin = config.CompileOptions.enableEmscriptenGLX && IsCompatibleWithUnity202203OrNewer();
 
                 var glx2022Importer = AssetImporter.GetAtPath(glLibs[0]) as PluginImporter;
@@ -437,7 +437,7 @@ namespace WeChatWASM
             }
 
             {
-                // unity2021 lib引入
+                // unity2021 lib 도입
                 bool showEnableGLX2021Plugin = config.CompileOptions.enableEmscriptenGLX && IsCompatibleWithUnity202102To202203();
 
                 var glx2021Importer = AssetImporter.GetAtPath(glLibs[1]) as PluginImporter;
@@ -641,7 +641,7 @@ namespace WeChatWASM
             else
             {
 #if TUANJIE_2022_3_OR_NEWER
-                if(EditorUserBuildSettings.activeBuildTarget != BuildTarget.WeixinMiniGame 
+                if(EditorUserBuildSettings.activeBuildTarget != BuildTarget.WeixinMiniGame
 #if PLATFORM_PLAYABLEADS
                     && EditorUserBuildSettings.activeBuildTarget != BuildTarget.PlayableAds
 #endif
@@ -657,7 +657,7 @@ namespace WeChatWASM
             GraphicsDeviceType[] targets = new GraphicsDeviceType[] { };
 #if PLATFORM_WEIXINMINIGAME
             PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.WeixinMiniGame, false);
-            // 启用 iOS Metal 渲染
+            // iOS Metal 렌더링 활성화
             if (UseiOSMetal)
             {
                 if (config.CompileOptions.Webgl2)
@@ -669,7 +669,7 @@ namespace WeChatWASM
                     PlayerSettings.SetGraphicsAPIs(BuildTarget.WeixinMiniGame, new GraphicsDeviceType[] { GraphicsDeviceType.Metal, GraphicsDeviceType.OpenGLES2 });
                 }
             }
-            else 
+            else
             {
                 if (config.CompileOptions.Webgl2)
                 {
@@ -694,11 +694,11 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 移除输入js代码字符串中所有以prefix为前缀的函数的函数体，function与函数名之间仅允许有一个空格
+        /// 입력 js 코드 문자열에서 prefix로 시작하는 모든 함수의 본문을 제거합니다. function과 함수 이름 사이에는 공백이 하나만 허용됩니다
         /// </summary>
-        /// <param name="input">输入字符串</param>
-        /// <param name="prefix">函数前缀</param>
-        /// <returns>处理后的字符串</returns>
+        /// <param name="input">입력 문자열</param>
+        /// <param name="prefix">함수 접두사</param>
+        /// <returns>처리된 문자열</returns>
         public static string RemoveFunctionsWithPrefix(string input, string prefix)
         {
             StringBuilder output = new StringBuilder();
@@ -750,12 +750,12 @@ namespace WeChatWASM
                 );
             if (res.Length != 0)
             {
-                Debug.LogError("系统发现自定义构建模板中存在以下文件对应的基础模板已被更新，为确保游戏导出正常工作请自行解决可能存在的冲突：");
+                Debug.LogError("시스템에서 사용자 정의 빌드 템플릿의 기본 템플릿이 업데이트되었습니다. 게임 내보내기의 정상 작성을 위해 충돌을 해결하십시오.");
                 for (int i = 0; i < res.Length; i++)
                 {
-                    Debug.LogError($"自定义模板文件 [{i}]: [ {res[i]} ]");
+                    Debug.LogError($"사용자 정의 템플릿 파일 [{i}]: [ {res[i]} ]");
                 }
-                Debug.LogError("有关上述警告产生原因及处理办法请阅读：https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/BuildTemplate.html#%E6%96%B0%E7%89%88%E6%9C%ACsdk%E5%BC%95%E8%B5%B7%E7%9A%84%E5%86%B2%E7%AA%81%E6%8F%90%E9%86%92");
+                Debug.LogError("위 경고의 원인 및 처리 방법에 대해서는 다음 링크를 참조하세요: https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/BuildTemplate.html#%E6%96%B0%E7%89%88%E6%9C%ACsdk%E5%BC%95%E8%B5%B7%E7%9A%84%E5%86%B2%E7%AA%81%E6%8F%90%E9%86%92");
                 return false;
             }
             return true;
@@ -1023,12 +1023,12 @@ namespace WeChatWASM
             {
                 if (config.ProjectConf.MemorySize >= 1024)
                 {
-                    UnityEngine.Debug.LogErrorFormat($"UnityHeap必须小于1024，请查看GIT文档<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">优化Unity WebGL的内存</a>");
+                    UnityEngine.Debug.LogErrorFormat($"UnityHeap는 1024보다 작아야 합니다. GIT 문서<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">Unity WebGL 메모리 최적화</a>를 참조하세요.");
                     return -1;
                 }
                 else if (config.ProjectConf.MemorySize >= 500)
                 {
-                    UnityEngine.Debug.LogWarningFormat($"UnityHeap大于500M时，32位Android与iOS普通模式较大概率启动失败，中轻度游戏建议小于该值。请查看GIT文档<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">优化Unity WebGL的内存</a>");
+                    UnityEngine.Debug.LogWarningFormat($"UnityHeap가 500M 이상일 경우, 32비트 Android 및 iOS 일반 모드에서 대부분 시작에 실패합니다. 중경도 게임은 이 값을 아래로 설정하는 것을 권장합니다. GIT 문서<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">Unity WebGL 메모리 최적화</a>를 참조하세요.");
                 }
 #if PLATFORM_WEIXINMINIGAME
                 PlayerSettings.WeixinMiniGame.emscriptenArgs += $" -s TOTAL_MEMORY={config.ProjectConf.MemorySize}MB";
@@ -1038,7 +1038,7 @@ namespace WeChatWASM
             }
 
             string original_EXPORTED_RUNTIME_METHODS = "\"ccall\",\"cwrap\",\"stackTrace\",\"addRunDependency\",\"removeRunDependency\",\"FS_createPath\",\"FS_createDataFile\",\"stackTrace\",\"writeStackCookie\",\"checkStackCookie\"";
-            // 添加额外的EXPORTED_RUNTIME_METHODS
+            // 추가 EXPORTED_RUNTIME_METHODS
             string additional_EXPORTED_RUNTIME_METHODS = ",\"lengthBytesUTF8\",\"stringToUTF8\"";
 
 #if PLATFORM_WEIXINMINIGAME
@@ -1056,7 +1056,7 @@ namespace WeChatWASM
 
 #if UNITY_2021_2_OR_NEWER
 #if UNITY_2022_1_OR_NEWER
-            // 默认更改为OptimizeSize，减少代码包体积
+            // 기본적으로 OptimizeSize로 변경하여 코드 패키지 크기를 줄입니다
             PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.WeixinMiniGame, config.CompileOptions.Il2CppOptimizeSize ? Il2CppCodeGeneration.OptimizeSize : Il2CppCodeGeneration.OptimizeSpeed);
 #else
             EditorUserBuildSettings.il2CppCodeGeneration = config.CompileOptions.Il2CppOptimizeSize ? Il2CppCodeGeneration.OptimizeSize : Il2CppCodeGeneration.OptimizeSpeed;
@@ -1078,13 +1078,13 @@ namespace WeChatWASM
             }
 
 #if UNITY_6000_0_OR_NEWER
-            // 从小游戏转换工具里无法直接开启wasm2023特性 会导致转出的webgl异常，所以强制关闭
+            // 작은게임 변환 도구에서는 wasm2023 기능을 직접 활성화할 수 없으며, 이는 내보낸 webgl에 문제가 발생하므로 강제로 비활성화합니다
            	PlayerSettings.WebGL.wasm2023 = false;
-#endif   
+#endif
 
 #if UNITY_2021_2_OR_NEWER
 #if UNITY_2022_1_OR_NEWER
-                // 默认更改为OptimizeSize，减少代码包体积
+                // 기본적으로 OptimizeSize로 변경하여 코드 패키지 크기를 줄입니다
             PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.WebGL, config.CompileOptions.Il2CppOptimizeSize ? Il2CppCodeGeneration.OptimizeSize : Il2CppCodeGeneration.OptimizeSpeed);
 #else
             EditorUserBuildSettings.il2CppCodeGeneration = config.CompileOptions.Il2CppOptimizeSize ? Il2CppCodeGeneration.OptimizeSize : Il2CppCodeGeneration.OptimizeSpeed;
@@ -1229,14 +1229,14 @@ namespace WeChatWASM
 
         private static void MaybeInstallLuaNewStateHook()
         {
-            // 当前版本仅支持 win & mac, 不满足时直接跳过.
+            // 현재 버전은 Windows 및 macOS만 지원하며, 조건을 충족하지 않을 경우 건너뜁니다.
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 Debug.LogWarning($"MaybeInstallLuaNewStateHook:: Cannot install lua runtime on {RuntimeInformation.OSDescription}");
                 return;
             }
 
-            // 没有开启 perf tools, 不引入 newstate hook.
+            // perf 도구가 활성화되지 않아 newstate hook을 도입하지 않습니다.
             if (!config.CompileOptions.enablePerfAnalysis)
             {
                 return;
@@ -1266,7 +1266,7 @@ namespace WeChatWASM
             {
                 convertDataPackage(false);
                 UnityEngine.Debug.LogFormat("[Converter] All done!");
-                //ShowNotification(new GUIContent("转换完成"));
+                //ShowNotification(new GUIContent("변환 완료"));
                 Emit(LifeCycle.exportDone);
             }
             else
@@ -1275,44 +1275,44 @@ namespace WeChatWASM
             }
         }
         /// <summary>
-        /// 等brotli之后，统计下资源包加brotli压缩后代码包是否超过了30M（小游戏代码分包总大小限制）
+        /// brotli 압축 후 자원 패키지와 brotli 압축后的 코드 패키지의 총 크기가 30M(작은게임 코드 분할 패키지 총 크기 제한)를 초과하는지 확인합니다
         /// </summary>
         private static void convertDataPackage(bool brotliError)
         {
             var baseDataFilename = dataMd5 + ".webgl.data.unityweb.bin";
             var webglDirPath = Path.Combine(config.ProjectConf.DST, webglDir);
             var minigameDirPath = Path.Combine(config.ProjectConf.DST, miniGameDir);
-            var minigameDataPath = Path.Combine(minigameDirPath, "data-package");
-            // 未压缩的包名
+            var minigameDataPath = Path.Combine(minigameDataPath, "data-package");
+            // 압축되지 않은 패키지 이름
             var originDataFilename = baseDataFilename + ".txt";
             var originMinigameDataPath = Path.Combine(minigameDataPath, originDataFilename);
             var originTempDataPath = Path.Combine(webglDirPath, originDataFilename);
-            // br压缩的资源包名
+            // br 압축된 자원 패키지 이름
             var brDataFilename = baseDataFilename + ".br";
             var brMinigameDataPath = Path.Combine(minigameDataPath, brDataFilename);
             var tempDataBrPath = Path.Combine(webglDirPath, brDataFilename);
 
-            // 资源文件名
+            // 자원 파일 이름
             var dataFilename = originDataFilename;
-            // 原始webgl的资源路径，即webgl/build目录下的资源名
+            // 원본 webgl 자원 경로, 즉 webgl/build 디렉토리의 자원 이름
             var sourceDataPath = GetWebGLDataPath();
-            // webgl目录下的资源路径
+            // webgl 디렉토리의 자원 경로
             var tempDataPath = originTempDataPath;
             var dataPackageBrotliRet = 0;
-            // 如果brotli失败，使用CDN加载
+            // brotli가 실패하면 CDN으로 로드합니다
             if (brotliError)
             {
-                // brotli失败后，因为无法知道wasmcode大小，则得不到最终小游戏总包体大小。不能使用小游戏分包加载资源，还原成cdn的方式。
+                // brotli 실패 후, wasmcode 크기를 알 수 없어 최종 작은게임 총 패키지 크기를 알 수 없습니다. 작은게임 분할 패키지로 자원을 로드할 수 없으므로 CDN 방식으로 복원합니다.
                 if (config.ProjectConf.assetLoadType == 1)
                 {
-                    UnityEngine.Debug.LogWarning("brotli失败，无法检测文件大小，请上传资源文件到CDN");
+                    UnityEngine.Debug.LogWarning("brotli 실패, 파일 크기를 측정할 수 없습니다. 자원 파일을 CDN에 업로드하십시오.");
                     config.ProjectConf.assetLoadType = 0;
                 }
 
-                // ShowNotification(new GUIContent("Brotli压缩失败，请到转出目录手动压缩！！！"));
-                Debug.LogError("Brotli压缩失败，请到转出目录手动压缩！");
+                // ShowNotification(new GUIContent("Brotli 압축 실패, 내보낸 디렉토리로 이동하여 수동으로 압축하십시오!!!"));
+                Debug.LogError("Brotli 압축 실패, 내보낸 디렉토리로 이동하여 수동으로 압축하십시오!");
             }
-            // 需要压缩资源包
+            // 자원 패키지 압축이 필요합니다
             if (!!config.ProjectConf.compressDataPackage)
             {
                 dataFilename = brDataFilename;
@@ -1320,7 +1320,7 @@ namespace WeChatWASM
                 UnityEngine.Debug.LogFormat("[Compressing] Starting to compress datapackage");
                 dataPackageBrotliRet = Brotlib(dataFilename, sourceDataPath, tempDataPath);
                 Debug.Log("[Compressing] compress ret = " + dataPackageBrotliRet);
-                // 若压缩资源包失败，回退未压缩状态
+                // 자원 패키지 압축에 실패하면 압축되지 않은 상태로 되돌립니다
                 if (dataPackageBrotliRet != 0)
                 {
                     config.ProjectConf.compressDataPackage = false;
@@ -1329,36 +1329,37 @@ namespace WeChatWASM
                 }
             }
 
-            // 不需要压缩资源包或压缩失败
+            // 자원 패키지 압축이 불필요하거나 압축에 실패했습니다
             if (!config.ProjectConf.compressDataPackage || dataPackageBrotliRet != 0)
             {
-                // 将资源包从Build目录复制一份作为未压缩资源
+                // 자원 패키지를 Build 디렉토리에서 복사하여 압축되지 않은 자원으로 사용합니다
+                // 자원 패키지를 Build 디렉토리에서 복사하여 압축되지 않은 자원으로 사용합니다
                 File.Copy(sourceDataPath, tempDataPath, true);
             }
 
-            // 用小游戏分包加载时，需要计算是否未超过20M
+            // 작은게임 분할 패키지로 로드할 경우, 20M를 초과하지 않는지 계산해야 합니다
             if (config.ProjectConf.assetLoadType == 1)
             {
-                // 计算wasm包大小
+                // wasm 패키지 크기 계산
                 var brcodePath = Path.Combine(minigameDirPath, "wasmcode", codeMd5 + ".webgl.wasm.code.unityweb.wasm.br");
                 var brcodeInfo = new FileInfo(brcodePath);
                 var brcodeSize = brcodeInfo.Length;
-                // 计算首资源包大小
+                // 첫 번째 자원 패키지 크기 계산
                 var tempDataInfo = new FileInfo(tempDataPath);
                 var tempFileSize = tempDataInfo.Length.ToString();
-                // 胶水层及sdk可能占一定大小，粗略按照1M来算，则剩余29M
+                // 글루 레이어 및 SDK가 일정 크기를 차지할 수 있으므로 대략 1M로 계산하면 남은 공간은 29M입니다
                 if (brcodeSize + int.Parse(tempFileSize) > (30 - 1) * 1024 * 1024)
                 {
                     config.ProjectConf.assetLoadType = 0;
-                    Debug.LogError("资源文件过大，不适宜用放小游戏包内加载，请上传资源文件到CDN");
+                    Debug.LogError("자원 파일이 너무 큽니다. 작은게임 패키지 내 로드에 적합하지 않습니다. 자원 파일을 CDN에 업로드하십시오.");
                 }
                 else
                 {
-                    // 小游戏分包加载时，压缩成功且总大小符合要求，将br文件copy到小游戏目录
+                    // 작은게임 분할 패키지로 로드할 경우, 압축 성공 및 총 크기 조건을 충족하면 br 파일을 작은게임 디렉토리에 복사합니다
                     File.Copy(tempDataPath, config.ProjectConf.compressDataPackage ? brMinigameDataPath : originMinigameDataPath, true);
                 }
             }
-            // 设置InstantGame的首资源包路径，上传用
+            // InstantGame의 첫 번째 자원 패키지 경로를 설정하여 업로드에 사용합니다
             FirstBundlePath = tempDataPath;
 
             convertDataPackageJS();
@@ -1412,7 +1413,7 @@ namespace WeChatWASM
             {
                 dst = Path.Combine(config.ProjectConf.DST, miniGameDir);
             }
-            // cdn下载时不需要填写并行下载配置
+            // CDN 다운로드 시 병렬 다운로드 설정을 작성할 필요가 없습니다
             if (config.ProjectConf.assetLoadType == 0)
             {
                 var filePath = Path.Combine(dst, "game.json");
@@ -1424,14 +1425,14 @@ namespace WeChatWASM
                 writer.PrettyPrint = true;
                 gameJson["parallelPreloadSubpackages"].Remove(gameJson["parallelPreloadSubpackages"][1]);
 
-                // 将配置写回到文件夹
+                // 설정을 폴더에 다시 저장합니다
                 gameJson.ToJson(writer);
                 File.WriteAllText(filePath, writer.TextWriter.ToString());
             }
         }
 
         /// <summary>
-        /// 对文件做内容替换
+        /// 파일의 내용을 교체합니다
         /// </summary>
         /// <param name="files"></param>
         /// <param name="replaceList"></param>
@@ -1493,8 +1494,8 @@ namespace WeChatWASM
                 Path.Combine(config.ProjectConf.DST, miniGameDir)
                 );
             buildTemplate.start();
-            // FIX: 2021.2版本生成symbol有bug，导出时生成symbol报错，有symbol才copy
-            // 代码分包需要symbol文件以进行增量更新
+            // FIX: 2021.2 버전에서 symbol 생성에 버그가 있어 내보낼 때 symbol 생성 오류가 발생합니다. symbol이 있을 때만 복사합니다
+            // 코드 분할 패키지는 symbol 파일이 필요합니다. 증분 업데이트를 위해 필요합니다
             if (File.Exists(symbolPath))
             {
                 File.Copy(symbolPath, Path.Combine(config.ProjectConf.DST, miniGameDir, "webgl.wasm.symbols.unityweb"), true);
@@ -1504,8 +1505,8 @@ namespace WeChatWASM
 
             var info = new FileInfo(dataPath);
             dataFileSize = info.Length.ToString();
-            UnityEngine.Debug.LogFormat("[Converter] that to genarate md5 and copy files ended");
-            // 若APPID为快适配小游戏示例，则插入预览盒子
+            UnityEngine.Debug.LogFormat("[Converter] md5 생성 및 파일 복사가 완료되었습니다");
+            // APPID가 빠른 적응 작은게임 예제인 경우, 프리뷰 박스를 삽입합니다
             if (config.ProjectConf.Appid == "wx7c792ca878775717")
             {
                 InsertPreviewCode();
@@ -1515,7 +1516,7 @@ namespace WeChatWASM
             ClearFriendRelationCode();
             GameJsPlugins();
 
-            // 如果没有StreamingAssets目录，默认生成
+            // StreamingAssets 디렉토리가 없으면 기본 생성
             if (!Directory.Exists(Path.Combine(config.ProjectConf.DST, webglDir, "StreamingAssets")))
             {
                 Directory.CreateDirectory(Path.Combine(config.ProjectConf.DST, webglDir, "StreamingAssets"));
@@ -1528,13 +1529,13 @@ namespace WeChatWASM
             Debug.LogWarning("[WeChat Preview] InsertPreviewCode Start");
             Rule[] rules =
             {
-                // game.json 引入预览插件
+                // game.json에 프리뷰 플러그인을 추가합니다
                 new Rule()
                 {
                     old = "\"plugins\": {",
                     newStr = "\"plugins\": {\n" +
                     "    \"MiniGamePreviewPlugin\": {\n" +
-                    "      \"version\": \"latest\",\n" + // 这里更改版本号
+                    "      \"version\": \"latest\",\n" + // 여기에서 버전 번호를 변경합니다
                     "      \"provider\": \"wx7c792ca878775717\",\n" +
                     "      \"contexts\": [\n" +
                     "        {\n" +
@@ -1543,7 +1544,7 @@ namespace WeChatWASM
                     "      ]\n" +
                     "    },"
                 },
-                // game.js 嵌入：有url启动参数进入预览盒子
+                // game.js에 url 시작 매개변수로 프리뷰 박스 진입
                 new Rule()
                 {
                     old = "const managerConfig = {",
@@ -1560,7 +1561,7 @@ namespace WeChatWASM
                     "    } else {\n" +
                     "      startGame();\n" +
                     "    }\n" +
-                    "  } else if (res.query.url) { // 扫预览码进入\n" +
+                    "  } else if (res.query.url) { // 프리뷰 코드 스캔으로 진입\n" +
                     "    wx.restartMiniProgram({\n" +
                     "      path: `/?url=${res.query.url}`\n" +
                     "    });\n" +
@@ -1593,20 +1594,20 @@ namespace WeChatWASM
                     "function startGame() {\n" +
                     "const managerConfig = {",
                 },
-                // game.js 括号补齐
+                // game.js 괄호 보충
                 new Rule()
                 {
                     old = "    }\n});",
                     newStr = "    }\n});}",
                 },
-                // unity-sdk/module-helper.js 引入预览插件
+                // unity-sdk/module-helper.js 프리뷰 플러그인 추가
                 new Rule()
                 {
                     old = "import { MODULE_NAME } from './conf';",
                     newStr = "import { MODULE_NAME } from './conf';\n" +
                     "import { minigamePreview } from '../game';",
                 },
-                // unity-sdk/module-helper.js 预览环境下hookAPI
+                // unity-sdk/module-helper.js 프리뷰 환경에서 hookAPI
                 new Rule()
                 {
                     old = "this._send = GameGlobal.Module.SendMessage;",
@@ -1628,13 +1629,13 @@ namespace WeChatWASM
             var cachePath = Path.Combine(config.ProjectConf.DST, webglDir, filename);
             var shortFilename = filename.Substring(filename.IndexOf('.') + 1);
 
-            // 如果code没有发生过变化，且压缩方式不变，则不再进行br压缩
+            // 코드가 변경되지 않고 압축 방식이 동일하면 br 압축을 다시 하지 않습니다
             if (cachePath.Contains("wasm.code") && File.Exists(cachePath) && lastBrotliType == config.CompileOptions.brotliMT)
             {
                 File.Copy(cachePath, targetPath, true);
                 return 0;
             }
-            // 删除旧的br压缩文件
+            // 이전 br 압축 파일 삭제
             if (Directory.Exists(Path.Combine(config.ProjectConf.DST, webglDir)))
             {
                 foreach (string path in Directory.GetFiles(Path.Combine(config.ProjectConf.DST, webglDir)))
@@ -1668,7 +1669,7 @@ namespace WeChatWASM
             var sourceBuffer = File.ReadAllBytes(sourcePath);
             byte[] outputBuffer = new byte[0];
             int ret = 0;
-            if (sourceBuffer.Length > 50 * 1024 * 1024 && Path.GetExtension(sourcePath) == ".wasm") // 50MB以上的wasm压缩率低了可能导致小游戏包超过20MB，需提高压缩率
+            if (sourceBuffer.Length > 50 * 1024 * 1024 && Path.GetExtension(sourcePath) == ".wasm") // 50MB 이상의 wasm은 압축률이 낮아 작은게임 패키지가 20MB를 초과할 수 있으므로 압축률을 높여야 합니다
             {
                 ret = BrotliEnc.CompressWasmMT(sourceBuffer, ref outputBuffer, quality, window, maxCpuThreads);
             }
@@ -1694,7 +1695,7 @@ namespace WeChatWASM
 
 
         /// <summary>
-        /// 更新game.json
+        /// game.json 업데이트
         /// </summary>
         public static void ClearFriendRelationCode()
         {
@@ -1718,14 +1719,14 @@ namespace WeChatWASM
                 writer.IndentValue = 2;
                 writer.PrettyPrint = true;
 
-                // 将 game.json 里面关系链相关的配置删除
-                // 试玩 game.json 中不含其他配置
+                // game.json 내의 관계망 관련 설정을 삭제합니다
+                // 시도용 game.json에는 다른 설정이 포함되어 있지 않습니다
                 if (!config.SDKOptions.UseFriendRelation && gameJson.ContainsKey("openDataContext") && gameJson.ContainsKey("plugins"))
                 {
                     gameJson.Remove("openDataContext");
                     gameJson["plugins"].Remove("Layout");
 
-                    // 删除 open-data 相应的文件夹
+                    // open-data 관련 폴더 삭제
                     string openDataDir = Path.Combine(dst, "open-data");
                     UnityUtil.DelectDir(openDataDir);
                     Directory.Delete(openDataDir, true);
@@ -1742,14 +1743,14 @@ namespace WeChatWASM
                     gameJson["displayMode"] = "desktop";
                 }
 
-                // 将配置写回到文件夹
+                // 설정을 폴더에 다시 저장합니다
                 gameJson.ToJson(writer);
                 File.WriteAllText(filePath, writer.TextWriter.ToString());
             }
         }
 
         /// <summary>
-        /// 更新game.js
+        /// game.js 업데이트
         /// </summary>
         public static void GameJsPlugins()
         {
@@ -1829,7 +1830,7 @@ namespace WeChatWASM
                 content = content.Replace("'$PreLoadKeys'", PreLoadKeys);
                 File.WriteAllText(Path.Combine(dst, "unity-sdk", "storage.js"), content, Encoding.UTF8);
             }
-            // 修改纹理dxt
+            // 텍스처 dxt 수정
             // content = File.ReadAllText(Path.Combine(Application.dataPath, "WX-WASM-SDK-V2", "Runtime", "wechat-default", "unity-sdk", "texture.js"), Encoding.UTF8);
             content = File.ReadAllText(Path.Combine(UnityUtil.GetWxSDKRootPath(), "Runtime", defaultTemplateDir, "unity-sdk", "texture.js"), Encoding.UTF8);
             File.WriteAllText(Path.Combine(dst, "unity-sdk", "texture.js"), content, Encoding.UTF8);
@@ -1842,10 +1843,10 @@ namespace WeChatWASM
             var newFilename = Path.GetFileName(config.ProjectConf.bgImageSrc);
             if (config.ProjectConf.bgImageSrc != defaultImgSrc)
             {
-                // 图片宽高不能超过2048
+                // 이미지 가로 세로 크기는 2048을 초과할 수 없습니다
                 if (info.width > 2048 || info.height > 2048)
                 {
-                    throw new Exception("封面图宽高不可超过2048");
+                    throw new Exception("표지 이미지의 가로 세로 크기는 2048을 초과할 수 없습니다");
                 }
 
                 File.Delete(Path.Combine(config.ProjectConf.DST, miniGameDir, "images", oldFilename));
@@ -1858,8 +1859,8 @@ namespace WeChatWASM
             }
         }
         /// <summary>
-        /// 按;分隔字符串，将分隔后每一项作为字符串用,连接
-        /// eg: input "i1;i2;i3" => output: `"i1", "i2", "i3"`
+        /// ;로 문자열을 분리하고, 분리된 각 항목을 콤마로 연결합니다
+        /// 예: 입력 "i1;i2;i3" => 출력: `"i1", "i2", "i3"`
         /// </summary>
         /// <param name="inp"></param>
         /// <returns></returns>
@@ -1894,7 +1895,7 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 从webgl目录模糊搜索preloadfiles中的文件，作为预下载的列表
+        /// webgl 디렉토리에서 preloadfiles의 파일을 패턴 매칭하여 사전 다운로드 목록으로 사용합니다
         /// </summary>
         private static string GetPreloadList(string strPreloadfiles)
         {
@@ -1926,7 +1927,7 @@ namespace WeChatWASM
                     {
                         if (fileInfo.Name.Contains(preloadFile.fileName))
                         {
-                            // 相对于StreamingAssets的路径
+                            // StreamingAssets에 대한 상대 경로
                             var relativePath = path.Substring(streamingAssetsPath.Length + 1).Replace('\\', '/');
                             preloadFile.relativePath = relativePath;
                             break;
@@ -1936,14 +1937,14 @@ namespace WeChatWASM
             }
             else
             {
-                UnityEngine.Debug.LogError("没有找到StreamingAssets目录， 无法生成预下载列表");
+                UnityEngine.Debug.LogError("StreamingAssets 디렉토리를 찾을 수 없습니다. 사전 다운로드 목록을 생성할 수 없습니다");
             }
 
             foreach (var preloadFile in preloadFiles)
             {
                 if (preloadFile.relativePath == string.Empty)
                 {
-                    UnityEngine.Debug.LogError($"并非所有预下载的文件都被找到，剩余：{preloadFile.fileName}");
+                    UnityEngine.Debug.LogError($"모든 사전 다운로드 파일이 찾겨지지 않았습니다. 남은 파일: {preloadFile.fileName}");
                     continue;
                 }
 
@@ -1961,16 +1962,16 @@ namespace WeChatWASM
             }
 
             List<int> unicodeCodes = new List<int>();
-            // 将字符串中的每个字符转换为Unicode编码并存储在数组中
+            // 문자열의 각 문자를 Unicode 인코딩으로 변환하여 배열에 저장합니다
             foreach (char c in customUnicode)
             {
                 unicodeCodes.Add(char.ConvertToUtf32(c.ToString(), 0));
             }
 
-            // 对数组进行排序
+            // 배열을 정렬합니다
             unicodeCodes.Sort();
 
-            // 将连续的编码合并为范围
+            // 연속된 인코딩을 범위로 병합합니다
             List<Tuple<int, int>> ranges = new List<Tuple<int, int>>();
             int startRange = unicodeCodes[0];
             int endRange = unicodeCodes[0];
@@ -1994,12 +1995,12 @@ namespace WeChatWASM
             ranges.Add(Tuple.Create(startRange, endRange));
 
             StringBuilder ret = new StringBuilder();
-            // 输出范围
+            // 범위 출력
             foreach (var range in ranges)
             {
                 ret.AppendFormat("[0x{0:X}, 0x{1:X}], ", range.Item1, range.Item2);
             }
-            // 移除字符串末尾的多余", "
+            // 문자열 끝의 불필요한 ", " 제거
             ret.Length -= 2;
             ret.Insert(0, "[");
             ret.Append("]");
@@ -2008,12 +2009,12 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 生成Unitynamespace下的bootconfig
+        /// Unitynamespace 하위의 bootconfig 생성
         /// </summary>
         private static string GenerateBootInfo()
         {
             StringBuilder sb = new StringBuilder();
-            // 添加player-connection-ip信息
+            // player-connection-ip 정보 추가
             try
             {
                 var ips = Dns.GetHostEntry("").AddressList
@@ -2021,14 +2022,14 @@ namespace WeChatWASM
                     .Select(ip => ip.ToString())
                     .ToList();
 
-                // 优先选择局域网IP（192.168.x.x, 10.x.x.x, 172.16.x.x）
+                // 로컬 네트워크 IP(192.168.x.x, 10.x.x.x, 172.16.x.x)를 우선 선택합니다
                 var localNetworkIps = ips.Where(ip =>
                     ip.StartsWith("192.168.") ||
                     ip.StartsWith("10.") ||
                     (ip.StartsWith("172.") && int.Parse(ip.Split('.')[1]) >= 16 && int.Parse(ip.Split('.')[1]) <= 31))
                     .ToList();
 
-                // 如果有局域网IP则使用，否则使用其他IP，最后回退到127.0.0.1
+                // 로컬 네트워크 IP가 있으면 사용하고, 없으면 다른 IP를 사용하며, 마지막으로 127.0.0.1로 되돌립니다
                 var selectedIp = localNetworkIps.Any() ? localNetworkIps.First() :
                                ips.Any() ? ips.First() : "127.0.0.1";
 
@@ -2036,7 +2037,7 @@ namespace WeChatWASM
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[可选]生成Boot info 失败！错误：" + e.Message);
+                Debug.LogWarning("[선택 사항] Boot info 생성 실패! 오류: " + e.Message);
             }
 
 
@@ -2048,7 +2049,7 @@ namespace WeChatWASM
             UnityEngine.Debug.LogFormat("[Converter] Starting to modify configs");
 
             var PRELOAD_LIST = GetPreloadList(config.ProjectConf.preloadFiles);
-            // 试玩不存在封面图
+            // 시도용에는 표지 이미지가 없습니다
             var imgSrc = isPlayableBuild ? "" : HandleLoadingImage();
 
             var bundlePathIdentifierStr = GetArrayString(config.ProjectConf.bundlePathIdentifier);
@@ -2125,7 +2126,7 @@ namespace WeChatWASM
                 config.CompileOptions.enablePerfAnalysis ? "true" : "false",
                 config.ProjectConf.MemorySize.ToString(),
                 config.SDKOptions.disableMultiTouch ? "true" : "false",
-                // Perfstream，暂时设为false
+                // Perfstream, 임시로 false로 설정
                 "false",
                 config.CompileOptions.enableEmscriptenGLX ? "true" : "false",
                 config.CompileOptions.enableiOSMetal ? "true" : "false"
@@ -2160,7 +2161,7 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 获取当前工程颜色空间
+        /// 현재 프로젝트의 색상 공간을 가져옵니다
         /// </summary>
         /// <returns></returns>
         private static string GetColorSpace()
@@ -2179,7 +2180,7 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 删掉导出目录webgl目录下旧资源包
+        /// 내보내기 디렉토리 webgl 디렉토리의 이전 자원 패키지를 삭제합니다
         /// </summary>
         private static void RemoveOldAssetPackage(string dstDir)
         {
@@ -2233,7 +2234,7 @@ namespace WeChatWASM
         }
 
         /// <summary>
-        /// 兼容 WebGL1 WebGL2 Linear Gamma 配置 Assets/WX-WASM-SDK/Plugins
+        /// WebGL1 WebGL2 Linear Gamma 설정을 호환하도록 Assets/WX-WASM-SDK/Plugins
         /// </summary>
         private static void SettingWXTextureMinJSLib()
         {
@@ -2252,7 +2253,7 @@ namespace WeChatWASM
             {
                 string jsLibRootDir = $"Assets{DS}WX-WASM-SDK-V2{DS}Runtime{DS}Plugins{DS}";
 
-                // 下方顺序不可变动
+                // 아래 순서는 변경할 수 없습니다
                 jsLibs = new string[]
                 {
                      $"{jsLibRootDir}SDK-WX-TextureMin-JS-WEBGL1.jslib",
