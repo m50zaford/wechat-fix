@@ -20,7 +20,7 @@ public class WXAssetPostprocessor : AssetPostprocessor
         PluginImporter importer = AssetImporter.GetAtPath(wxPerfPluginAsset) as PluginImporter;
         if (importer == null) return;
 
-        // wx_perf_2022.a/o 파일인지 확인
+        // 判断是否是wx_perf_2022.a/o文件
         if (wxPerfPluginAsset.Contains("wx_perf_2022.a"))
         {
             if (IsCompatibleWithUnity202203OrNewer() && EnableWXPostProcess)
@@ -41,11 +41,11 @@ public class WXAssetPostprocessor : AssetPostprocessor
                 RemovePluginAssetAllCompatibility(wxPerfPluginAsset);
             }
 
-            return;
+            return; 
         }
 
 
-        // wx_perf_2021.a/o 파일인지 확인
+        // 判断是否是wx_perf_2021.a/o文件
         if (wxPerfPluginAsset.Contains("wx_perf_2021.a"))
         {
             if (IsCompatibleWithUnity202103To202203() && EnableWXPostProcess)
@@ -70,7 +70,7 @@ public class WXAssetPostprocessor : AssetPostprocessor
                 RemovePluginAssetAllCompatibility(wxPerfPluginAsset);
             }
 
-            return;
+            return; 
         }
 
         if (wxPerfPluginAsset.Contains("WxPerfJsBridge.jslib"))
@@ -99,7 +99,7 @@ public class WXAssetPostprocessor : AssetPostprocessor
 
             return;
         }
-
+        
 
 
     }

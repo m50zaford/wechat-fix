@@ -36,7 +36,7 @@ namespace WeChatWASM
 
         public override string GetSubplatformName()
         {
-            return "WeChat:WeChat 작은 게임";
+            return "WeChat:微信小游戏";
         }
 
         public override MiniGameSettings GetSubplatformSettings()
