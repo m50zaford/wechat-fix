@@ -7,10 +7,10 @@ namespace WeChatWASM
 
     public class WXPlayableWin : EditorWindow
     {
-        [MenuItem("微信小游戏 / 转换小游戏试玩", false, 2)]
+        [MenuItem("위챗 미니게임 / 미니게임 시험판 변환", false, 2)]
         public static void Open()
         {
-            var win = GetWindow(typeof(WXPlayableWin), false, "微信小游戏试玩转换工具面板");
+            var win = GetWindow(typeof(WXPlayableWin), false, "위챗 미니게임 시험판 변환 도구 패널");
             win.minSize = new Vector2(350, 400);
             win.position = new Rect(200, 200, 600, 300);
             win.Show();

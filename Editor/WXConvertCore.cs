@@ -154,23 +154,23 @@ namespace WeChatWASM
         {
             if (!CheckSDK())
             {
-                Debug.LogError("若游戏曾使用旧版本微信SDK，需删除 Assets/WX-WASM-SDK 文件夹后再导入最新工具包。");
+                Debug.LogError("게임이 이전 버전의 위챗 SDK를 사용한 적이 있다면, Assets/WX-WASM-SDK 폴더를 삭제한 후 최신 도구 패키지를 다시 가져와야 합니다.");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             if (!isPlayableBuild && !CheckBuildTemplate())
             {
-                Debug.LogError("因构建模板检查失败终止导出。");
+                Debug.LogError("빌드 템플릿 검사 실패로 내보내기가 중단되었습니다.");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             if (!isPlayableBuild && CheckInvalidPerfIntegration())
             {
-                Debug.LogError("性能分析工具只能用于Development Build, 终止导出!");
+                Debug.LogError("성능 분석 도구는 Development Build에서만 사용 가능합니다. 내보내기 중단!");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             dynamic config = isPlayableBuild ? UnityUtil.GetPlayableEditorConf() : UnityUtil.GetEditorConf();
             if (config.ProjectConf.relativeDST == string.Empty)
             {
-                Debug.LogError("请先配置游戏导出路径");
+                Debug.LogError("게임 내보내기 경로를 먼저 설정하세요.");
                 return WXExportError.BUILD_WEBGL_FAILED;
             }
             return WXExportError.SUCCEED;
@@ -262,7 +262,7 @@ namespace WeChatWASM
                     {
                         if (!result)
                         {
-                            Debug.LogWarning("[首资源包跳过优化]：因处理失败自动跳过" + info);
+                            Debug.LogWarning("[첫 번째 리소스 패키지 최적화 건너뜀]: 처리 실패로 자동 건너뜀 - " + info);
                         }
 
                         finishExport();
@@ -750,12 +750,12 @@ namespace WeChatWASM
                 );
             if (res.Length != 0)
             {
-                Debug.LogError("系统发现自定义构建模板中存在以下文件对应的基础模板已被更新，为确保游戏导出正常工作请自行解决可能存在的冲突：");
+                Debug.LogError("사용자 정의 빌드 템플릿에서 다음 파일에 해당하는 기본 템플릿이 업데이트된 것이 발견되었습니다. 게임 내보내기가 정상 작동하도록 충돌을 직접 해결하세요:");
                 for (int i = 0; i < res.Length; i++)
                 {
-                    Debug.LogError($"自定义模板文件 [{i}]: [ {res[i]} ]");
+                    Debug.LogError($"사용자 정의 템플릿 파일 [{i}]: [ {res[i]} ]");
                 }
-                Debug.LogError("有关上述警告产生原因及处理办法请阅读：https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/BuildTemplate.html#%E6%96%B0%E7%89%88%E6%9C%ACsdk%E5%BC%95%E8%B5%B7%E7%9A%84%E5%86%B2%E7%AA%81%E6%8F%90%E9%86%92");
+                Debug.LogError("위 경고의 원인 및 해결 방법은 다음을 참조하세요:https://wechat-miniprogram.github.io/minigame-unity-webgl-transform/Design/BuildTemplate.html#%E6%96%B0%E7%89%88%E6%9C%ACsdk%E5%BC%95%E8%B5%B7%E7%9A%84%E5%86%B2%E7%AA%81%E6%8F%90%E9%86%92");
                 return false;
             }
             return true;
@@ -1023,12 +1023,12 @@ namespace WeChatWASM
             {
                 if (config.ProjectConf.MemorySize >= 1024)
                 {
-                    UnityEngine.Debug.LogErrorFormat($"UnityHeap必须小于1024，请查看GIT文档<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">优化Unity WebGL的内存</a>");
+                    UnityEngine.Debug.LogErrorFormat($"UnityHeap은 1024 미만이어야 합니다. GIT 문서를 참조하세요: <a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">Unity WebGL 메모리 최적화</a>");
                     return -1;
                 }
                 else if (config.ProjectConf.MemorySize >= 500)
                 {
-                    UnityEngine.Debug.LogWarningFormat($"UnityHeap大于500M时，32位Android与iOS普通模式较大概率启动失败，中轻度游戏建议小于该值。请查看GIT文档<a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">优化Unity WebGL的内存</a>");
+                    UnityEngine.Debug.LogWarningFormat($"UnityHeap이 500MB를 초과하면 32비트 Android 및 iOS 일반 모드에서 시작 실패 가능성이 높습니다. 중경량 게임은 이 값 미만을 권장합니다. GIT 문서를 참조하세요: <a href=\"https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/OptimizationMemory.md\">Unity WebGL 메모리 최적화</a>");
                 }
 #if PLATFORM_WEIXINMINIGAME
                 PlayerSettings.WeixinMiniGame.emscriptenArgs += $" -s TOTAL_MEMORY={config.ProjectConf.MemorySize}MB";
@@ -1305,12 +1305,12 @@ namespace WeChatWASM
                 // brotli失败后，因为无法知道wasmcode大小，则得不到最终小游戏总包体大小。不能使用小游戏分包加载资源，还原成cdn的方式。
                 if (config.ProjectConf.assetLoadType == 1)
                 {
-                    UnityEngine.Debug.LogWarning("brotli失败，无法检测文件大小，请上传资源文件到CDN");
+                    UnityEngine.Debug.LogWarning("brotli 실패, 파일 크기를 감지할 수 없습니다. 리소스 파일을 CDN에 업로드하세요.");
                     config.ProjectConf.assetLoadType = 0;
                 }
 
                 // ShowNotification(new GUIContent("Brotli压缩失败，请到转出目录手动压缩！！！"));
-                Debug.LogError("Brotli压缩失败，请到转出目录手动压缩！");
+                Debug.LogError("Brotli 압축 실패. 내보내기 디렉토리에서 수동으로 압축하세요!");
             }
             // 需要压缩资源包
             if (!!config.ProjectConf.compressDataPackage)
@@ -1350,7 +1350,7 @@ namespace WeChatWASM
                 if (brcodeSize + int.Parse(tempFileSize) > (30 - 1) * 1024 * 1024)
                 {
                     config.ProjectConf.assetLoadType = 0;
-                    Debug.LogError("资源文件过大，不适宜用放小游戏包内加载，请上传资源文件到CDN");
+                    Debug.LogError("리소스 파일이 너무 커서 미니게임 패키지 내 로딩에 부적합합니다. 리소스 파일을 CDN에 업로드하세요.");
                 }
                 else
                 {
@@ -1845,7 +1845,7 @@ namespace WeChatWASM
                 // 图片宽高不能超过2048
                 if (info.width > 2048 || info.height > 2048)
                 {
-                    throw new Exception("封面图宽高不可超过2048");
+                    throw new Exception("커버 이미지의 가로/세로 크기는 2048을 초과할 수 없습니다.");
                 }
 
                 File.Delete(Path.Combine(config.ProjectConf.DST, miniGameDir, "images", oldFilename));
@@ -1936,14 +1936,14 @@ namespace WeChatWASM
             }
             else
             {
-                UnityEngine.Debug.LogError("没有找到StreamingAssets目录， 无法生成预下载列表");
+                UnityEngine.Debug.LogError("StreamingAssets 디렉토리를 찾을 수 없어 사전 다운로드 목록을 생성할 수 없습니다.");
             }
 
             foreach (var preloadFile in preloadFiles)
             {
                 if (preloadFile.relativePath == string.Empty)
                 {
-                    UnityEngine.Debug.LogError($"并非所有预下载的文件都被找到，剩余：{preloadFile.fileName}");
+                    UnityEngine.Debug.LogError($"사전 다운로드 파일이 모두 발견되지 않았습니다. 남은 항목: {preloadFile.fileName}");
                     continue;
                 }
 
@@ -2036,7 +2036,7 @@ namespace WeChatWASM
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[可选]生成Boot info 失败！错误：" + e.Message);
+                Debug.LogWarning("[선택사항] Boot info 생성 실패! 오류: " + e.Message);
             }
 
 

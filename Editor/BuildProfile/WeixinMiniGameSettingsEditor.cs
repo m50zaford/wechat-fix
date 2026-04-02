@@ -44,21 +44,21 @@ namespace WeChatWASM
             linkStyle.alignment = TextAnchor.UpperLeft;
             linkStyle.wordWrap = true;
 
-            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "基本信息");
+            foldBaseInfo = EditorGUILayout.Foldout(foldBaseInfo, "기본 정보");
             if (foldBaseInfo)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
 
-                formInput("appid", "游戏AppID");
-                formInput("cdn", "游戏资源CDN");
-                formInput("projectName", "小游戏项目名");
-                formIntPopup("orientation", "游戏方向", new[] { "Portrait", "Landscape", "LandscapeLeft", "LandscapeRight" }, new[] { 0, 1, 2, 3 });
-                formInput("memorySize", "UnityHeap预留内存(?)", "单位MB，预分配内存值，超休闲游戏256/中轻度496/重度游戏768，需预估游戏最大UnityHeap值以防止内存自动扩容带来的峰值尖刺。预估方法请查看GIT文档《优化Unity WebGL的内存》");
+                formInput("appid", "게임 AppID");
+                formInput("cdn", "게임 리소스 CDN");
+                formInput("projectName", "미니게임 프로젝트명");
+                formIntPopup("orientation", "게임 방향", new[] { "Portrait", "Landscape", "LandscapeLeft", "LandscapeRight" }, new[] { 0, 1, 2, 3 });
+                formInput("memorySize", "UnityHeap 예약 메모리(?)", "단위: MB, 사전 할당 메모리 값. 초경량 게임 256/중경량 496/고사양 게임 768. 게임의 최대 UnityHeap 값을 예측하여 메모리 자동 확장으로 인한 피크 스파이크를 방지해야 합니다. 예측 방법은 GIT 문서 'Unity WebGL 메모리 최적화'를 참조하세요.");
 
                 EditorGUILayout.EndVertical();
             }
 
-            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "启动Loading配置");
+            foldLoadingConfig = EditorGUILayout.Foldout(foldLoadingConfig, "시작 로딩 설정");
             if (foldLoadingConfig)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -66,7 +66,7 @@ namespace WeChatWASM
                 GUILayout.BeginHorizontal();
                 string targetBg = "bgImageSrc";
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                tex = (Texture)EditorGUILayout.ObjectField("启动背景图/视频封面", tex, typeof(Texture2D), false);
+                tex = (Texture)EditorGUILayout.ObjectField("시작 배경 이미지/동영상 커버", tex, typeof(Texture2D), false);
                 var currentBgSrc = AssetDatabase.GetAssetPath(tex);
                 if (!string.IsNullOrEmpty(currentBgSrc) && currentBgSrc != formInputData[targetBg])
                 {
@@ -75,30 +75,30 @@ namespace WeChatWASM
                 }
                 GUILayout.EndHorizontal();
 
-                formInput("videoUrl", "加载阶段视频URL");
-                formIntPopup("assetLoadType", "首包资源加载方式", new[] { "CDN", "小游戏包内" }, new[] { 0, 1 });
-                formCheckbox("compressDataPackage", "压缩首包资源(?)", "将首包资源Brotli压缩, 降低资源大小. 注意: 首次启动耗时可能会增加200ms, 仅推荐使用小游戏分包加载时节省包体大小使用");
-                formInput("bundleExcludeExtensions", "不自动缓存文件类型(?)", "(使用;分割)当请求url包含资源'cdn+StreamingAssets'时会自动缓存，但StreamingAssets目录下不是所有文件都需缓存，此选项配置不需要自动缓存的文件拓展名。默认值json");
-                formInput("bundleHashLength", "Bundle名称Hash长度(?)", "自定义Bundle文件名中hash部分长度，默认值32，用于缓存控制。");
-                formInput("preloadFiles", "预下载文件列表(?)", "使用;间隔，支持模糊匹配");
+                formInput("videoUrl", "로딩 단계 동영상 URL");
+                formIntPopup("assetLoadType", "첫 번째 패키지 리소스 로딩 방식", new[] { "CDN", "미니게임 패키지 내" }, new[] { 0, 1 });
+                formCheckbox("compressDataPackage", "첫 번째 패키지 리소스 압축(?)", "첫 번째 패키지 리소스를 Brotli 압축하여 리소스 크기를 줄입니다. 주의: 최초 시작 시간이 200ms 증가할 수 있으며, 미니게임 서브패키지 로딩 시 패키지 크기 절약 용도로만 권장됩니다.");
+                formInput("bundleExcludeExtensions", "자동 캐시 제외 파일 유형(?)", "(;로 구분) 요청 URL에 'cdn+StreamingAssets' 리소스가 포함되면 자동 캐시되지만, StreamingAssets 디렉토리의 모든 파일이 캐시될 필요는 없습니다. 이 옵션은 자동 캐시가 불필요한 파일 확장자를 설정합니다. 기본값: json");
+                formInput("bundleHashLength", "Bundle 이름 Hash 길이(?)", "Bundle 파일명의 hash 부분 길이를 사용자 지정합니다. 기본값 32, 캐시 제어에 사용됩니다.");
+                formInput("preloadFiles", "사전 다운로드 파일 목록(?)", ";로 구분, 퍼지 매칭 지원");
 
                 EditorGUILayout.EndVertical();
             }
 
-            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK功能选项");
+            foldSDKOptions = EditorGUILayout.Foldout(foldSDKOptions, "SDK 기능 옵션");
             if (foldSDKOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
 
-                formCheckbox("useFriendRelation", "使用好友关系链");
-                formCheckbox("useMiniGameChat", "使用社交组件");
-                formCheckbox("preloadWXFont", "预加载微信字体(?)", "在game.js执行开始时预载微信系统字体，运行期间可使用WX.GetWXFont获取微信字体");
-                formCheckbox("disableMultiTouch", "禁止多点触控");
+                formCheckbox("useFriendRelation", "친구 관계 체인 사용");
+                formCheckbox("useMiniGameChat", "소셜 컴포넌트 사용");
+                formCheckbox("preloadWXFont", "위챗 폰트 사전 로드(?)", "game.js 실행 시작 시 위챗 시스템 폰트를 사전 로드하며, 런타임 중 WX.GetWXFont으로 위챗 폰트를 가져올 수 있습니다.");
+                formCheckbox("disableMultiTouch", "멀티터치 비활성화");
 
                 EditorGUILayout.EndVertical();
             }
 
-            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "调试编译选项");
+            foldDebugOptions = EditorGUILayout.Foldout(foldDebugOptions, "디버그 빌드 옵션");
             if (foldDebugOptions)
             {
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
@@ -111,30 +111,30 @@ namespace WeChatWASM
 #else
                 bool UseIL2CPP = true;
 #endif
-                formCheckbox("il2CppOptimizeSize", "Il2Cpp Optimize Size(?)", "对应于Il2CppCodeGeneration选项，勾选时使用OptimizeSize(默认推荐)，生成代码小15%左右，取消勾选则使用OptimizeSpeed。游戏中大量泛型集合的高频访问建议OptimizeSpeed，在使用HybridCLR等第三方组件时只能用OptimizeSpeed。(Dotnet Runtime模式下该选项无效)", !UseIL2CPP);
+                formCheckbox("il2CppOptimizeSize", "Il2Cpp Optimize Size(?)", "Il2CppCodeGeneration 옵션에 해당합니다. 체크 시 OptimizeSize 사용(기본 권장), 생성 코드 약 15% 감소. 체크 해제 시 OptimizeSpeed 사용. 대량의 제네릭 컬렉션 고빈도 접근 시 OptimizeSpeed 권장. HybridCLR 등 서드파티 컴포넌트 사용 시 OptimizeSpeed만 가능. (Dotnet Runtime 모드에서는 이 옵션 무효)", !UseIL2CPP);
                 formCheckbox("profilingFuncs", "Profiling Funcs");
                 formCheckbox("profilingMemory", "Profiling Memory");
 
                 formCheckbox("webgl2", "WebGL2.0(beta)");
-                formCheckbox("iOSPerformancePlus", "iOSPerformancePlus(?)", "是否使用iOS高性能+渲染方案，有助于提升渲染兼容性、降低WebContent进程内存");
-                formCheckbox("EmscriptenGLX", "EmscriptenGLX(?)", "是否使用EmscriptenGLX渲染方案");
-                formCheckbox("iOSMetal", "iOSMetal(?)", "是否使用iOSMetal渲染方案，需要开启iOS高性能+模式，有助于提升运行性能，降低iOS功耗");
+                formCheckbox("iOSPerformancePlus", "iOSPerformancePlus(?)", "iOS 고성능+ 렌더링 방식 사용 여부. 렌더링 호환성 향상 및 WebContent 프로세스 메모리 절감에 도움됩니다.");
+                formCheckbox("EmscriptenGLX", "EmscriptenGLX(?)", "EmscriptenGLX 렌더링 방식 사용 여부");
+                formCheckbox("iOSMetal", "iOSMetal(?)", "iOSMetal 렌더링 방식 사용 여부. iOS 고성능+ 모드 활성화 필요. 실행 성능 향상 및 iOS 전력 소비 절감에 도움됩니다.");
                 formCheckbox("deleteStreamingAssets", "Clear Streaming Assets");
                  formCheckbox("cleanBuild", "Clean WebGL Build");
                 // formCheckbox("cleanCloudDev", "Clean Cloud Dev");
-                formCheckbox("fbslim", "首包资源优化(?)", "导出时自动清理UnityEditor默认打包但游戏项目从未使用的资源，瘦身首包资源体积。（团结引擎已无需开启该能力）", UnityUtil.GetEngineVersion() > 0, (res) =>
+                formCheckbox("fbslim", "첫 번째 패키지 리소스 최적화(?)", "내보내기 시 UnityEditor 기본 패키징에 포함되지만 게임에서 사용하지 않는 리소스를 자동 정리하여 첫 번째 패키지 리소스 크기를 줄입니다. (Tuanjie 엔진에서는 이 기능 불필요)", UnityUtil.GetEngineVersion() > 0, (res) =>
                 {
-                    var fbWin = EditorWindow.GetWindow(typeof(WXFbSettingWindow), false, "首包资源优化配置面板", true);
+                    var fbWin = EditorWindow.GetWindow(typeof(WXFbSettingWindow), false, "첫 번째 패키지 리소스 최적화 설정 패널", true);
                     fbWin.minSize = new Vector2(680, 350);
                     fbWin.Show();
                 });
-                formCheckbox("autoAdaptScreen", "自适应屏幕尺寸(?)", "移动端旋转屏幕和PC端拉伸窗口时，自动调整画布尺寸");
-                formCheckbox("showMonitorSuggestModal", "显示优化建议弹窗");
-                formCheckbox("enableProfileStats", "显示性能面板");
-                formCheckbox("enableRenderAnalysis", "显示渲染日志(dev only)");
+                formCheckbox("autoAdaptScreen", "화면 크기 자동 조정(?)", "모바일 화면 회전 및 PC 창 크기 변경 시 캔버스 크기를 자동으로 조정합니다.");
+                formCheckbox("showMonitorSuggestModal", "최적화 제안 팝업 표시");
+                formCheckbox("enableProfileStats", "성능 패널 표시");
+                formCheckbox("enableRenderAnalysis", "렌더링 로그 표시(dev only)");
 
                 {
-                    formCheckbox("brotliMT", "brotli多线程压缩(?)", "开启多线程压缩可以提高出包速度，但会降低压缩率。如若不使用wasm代码分包请勿用多线程出包上线");
+                    formCheckbox("brotliMT", "brotli 멀티스레드 압축(?)", "멀티스레드 압축 활성화 시 빌드 속도가 향상되지만 압축률이 낮아집니다. wasm 코드 서브패키지를 사용하지 않는 경우 멀티스레드로 출시하지 마세요.");
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -148,20 +148,20 @@ namespace WeChatWASM
                     EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                    formCheckbox("m_AutomaticFillInstantGame", "自动填写AutoStreaming", "仅在开启AutoStreaming生效");
+                    formCheckbox("m_AutomaticFillInstantGame", "AutoStreaming 자동 입력", "AutoStreaming 활성화 시에만 적용");
                     GUILayout.EndHorizontal();
                     formInput("bundlePathIdentifier", "Bundle Path Identifier");
                     formInput("dataFileSubPrefix", "Data File Sub Prefix");
 
                     EditorGUI.BeginDisabledGroup(true);
-                    formCheckbox("autoUploadFirstBundle", "构建后自动上传首包(?)", "仅在开启AutoStreaming生效", true);
+                    formCheckbox("autoUploadFirstBundle", "빌드 후 첫 번째 패키지 자동 업로드(?)", "AutoStreaming 활성화 시에만 적용", true);
                     EditorGUI.EndDisabledGroup();
 
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(string.Empty, GUILayout.Width(10));
-                    GUILayout.Label(new GUIContent("清理AS配置(?)", "如需关闭AutoStreaming选用默认发布方案则需要清理AS配置项目。"), GUILayout.Width(140));
+                    GUILayout.Label(new GUIContent("AS 설정 초기화(?)", "AutoStreaming을 비활성화하고 기본 배포 방식을 선택하려면 AS 설정 항목을 초기화해야 합니다."), GUILayout.Width(140));
                     EditorGUI.BeginDisabledGroup(WXConvertCore.IsInstantGameAutoStreaming());
-                    if (GUILayout.Button(new GUIContent("恢复"), GUILayout.Width(60)))
+                    if (GUILayout.Button(new GUIContent("복원"), GUILayout.Width(60)))
                     {
                         var ProjectConf = miniGameProperty.FindPropertyRelative("ProjectConf");
                         string identifier = ProjectConf.FindPropertyRelative("bundlePathIdentifier").stringValue;
@@ -197,29 +197,29 @@ namespace WeChatWASM
             }
 
             {
-                foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "字体配置");
+                foldFontOptions = EditorGUILayout.Foldout(foldFontOptions, "폰트 설정");
                 if (foldFontOptions)
                 {
                     EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
-                    formCheckbox("CJK_Unified_Ideographs", "基本汉字(?)", "Unicode [0x4e00, 0x9fff]");
-                    formCheckbox("C0_Controls_and_Basic_Latin", "基本拉丁语（英文大小写、数字、英文标点）(?)", "Unicode [0x0, 0x7f]");
-                    formCheckbox("CJK_Symbols_and_Punctuation", "中文标点符号(?)", "Unicode [0x3000, 0x303f]");
-                    formCheckbox("General_Punctuation", "通用标点符号(?)", "Unicode [0x2000, 0x206f]");
-                    formCheckbox("Enclosed_CJK_Letters_and_Months", "CJK字母及月份(?)", "Unicode [0x3200, 0x32ff]");
-                    formCheckbox("Vertical_Forms", "中文竖排标点(?)", "Unicode [0xfe10, 0xfe1f]");
-                    formCheckbox("CJK_Compatibility_Forms", "CJK兼容符号(?)", "Unicode [0xfe30, 0xfe4f]");
-                    formCheckbox("Miscellaneous_Symbols", "杂项符号(?)", "Unicode [0x2600, 0x26ff]");
-                    formCheckbox("CJK_Compatibility", "CJK特殊符号(?)", "Unicode [0x3300, 0x33ff]");
-                    formCheckbox("Halfwidth_and_Fullwidth_Forms", "全角ASCII、全角中英文标点、半宽片假名、半宽平假名、半宽韩文字母(?)", "Unicode [0xff00, 0xffef]");
-                    formCheckbox("Dingbats", "装饰符号(?)", "Unicode [0x2700, 0x27bf]");
-                    formCheckbox("Letterlike_Symbols", "字母式符号(?)", "Unicode [0x2100, 0x214f]");
-                    formCheckbox("Enclosed_Alphanumerics", "带圈或括号的字母数字(?)", "Unicode [0x2460, 0x24ff]");
-                    formCheckbox("Number_Forms", "数字形式(?)", "Unicode [0x2150, 0x218f]");
-                    formCheckbox("Currency_Symbols", "货币符号(?)", "Unicode [0x20a0, 0x20cf]");
-                    formCheckbox("Arrows", "箭头(?)", "Unicode [0x2190, 0x21ff]");
-                    formCheckbox("Geometric_Shapes", "几何图形(?)", "Unicode [0x25a0, 0x25ff]");
-                    formCheckbox("Mathematical_Operators", "数学运算符号(?)", "Unicode [0x2200, 0x22ff]");
-                    formInput("CustomUnicode", "自定义Unicode(?)", "将填入的所有字符强制加入字体预加载列表");
+                    formCheckbox("CJK_Unified_Ideographs", "기본 한자(?)", "Unicode [0x4e00, 0x9fff]");
+                    formCheckbox("C0_Controls_and_Basic_Latin", "기본 라틴어 (영문 대소문자, 숫자, 영문 구두점)(?)", "Unicode [0x0, 0x7f]");
+                    formCheckbox("CJK_Symbols_and_Punctuation", "CJK 구두점 기호(?)", "Unicode [0x3000, 0x303f]");
+                    formCheckbox("General_Punctuation", "일반 구두점 기호(?)", "Unicode [0x2000, 0x206f]");
+                    formCheckbox("Enclosed_CJK_Letters_and_Months", "CJK 문자 및 월(?)", "Unicode [0x3200, 0x32ff]");
+                    formCheckbox("Vertical_Forms", "CJK 세로쓰기 구두점(?)", "Unicode [0xfe10, 0xfe1f]");
+                    formCheckbox("CJK_Compatibility_Forms", "CJK 호환 기호(?)", "Unicode [0xfe30, 0xfe4f]");
+                    formCheckbox("Miscellaneous_Symbols", "기타 기호(?)", "Unicode [0x2600, 0x26ff]");
+                    formCheckbox("CJK_Compatibility", "CJK 특수 기호(?)", "Unicode [0x3300, 0x33ff]");
+                    formCheckbox("Halfwidth_and_Fullwidth_Forms", "전각 ASCII, 전각 중영문 구두점, 반각 가타카나, 반각 히라가나, 반각 한글(?)", "Unicode [0xff00, 0xffef]");
+                    formCheckbox("Dingbats", "장식 기호(?)", "Unicode [0x2700, 0x27bf]");
+                    formCheckbox("Letterlike_Symbols", "문자형 기호(?)", "Unicode [0x2100, 0x214f]");
+                    formCheckbox("Enclosed_Alphanumerics", "원형 또는 괄호 문자 숫자(?)", "Unicode [0x2460, 0x24ff]");
+                    formCheckbox("Number_Forms", "숫자 형식(?)", "Unicode [0x2150, 0x218f]");
+                    formCheckbox("Currency_Symbols", "통화 기호(?)", "Unicode [0x20a0, 0x20cf]");
+                    formCheckbox("Arrows", "화살표(?)", "Unicode [0x2190, 0x21ff]");
+                    formCheckbox("Geometric_Shapes", "기하학 도형(?)", "Unicode [0x25a0, 0x25ff]");
+                    formCheckbox("Mathematical_Operators", "수학 연산 기호(?)", "Unicode [0x2200, 0x22ff]");
+                    formInput("CustomUnicode", "사용자 정의 Unicode(?)", "입력한 모든 문자를 폰트 사전 로드 목록에 강제 추가합니다.");
                     EditorGUILayout.EndVertical();
                 }
             }
