@@ -167,7 +167,7 @@ namespace WeChatWASM
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(string.Empty);
-                if (GUILayout.Button(new GUIContent("了解Instant Game AutoStreaming", ""), linkStyle))
+                if (GUILayout.Button(new GUIContent("Instant Game AutoStreaming 알아보기", ""), linkStyle))
                 {
                     Application.OpenURL("https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/InstantGameGuide.md");
                 }
@@ -283,7 +283,7 @@ namespace WeChatWASM
 
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(string.Empty);
-                    if (GUILayout.Button(new GUIContent("了解Instant Game AutoStreaming", ""), linkStyle))
+                    if (GUILayout.Button(new GUIContent("Instant Game AutoStreaming 알아보기", ""), linkStyle))
                     {
                         Application.OpenURL("https://github.com/wechat-miniprogram/minigame-unity-webgl-transform/blob/main/Design/InstantGameGuide.md");
                     }
